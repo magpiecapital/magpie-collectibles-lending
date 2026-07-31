@@ -42,6 +42,9 @@ physical card*, nothing more.
 | 12 | [Data sourcing](docs/12-data-sourcing.md) | Closing F-1/OQ-4: **PSA APR as the eBay-independent anchor** |
 | 13 | [Economic model & stress test](docs/13-economic-model.md) | Recovery math, drawdown-justified LTV bands, reserve sizing, break-even |
 | 14 | [Legal & regulatory](docs/14-legal-regulatory.md) | Flags for counsel: securities (the SEC curator-vault risk), pawn/usury, MSB, UCC lien perfection, AML/IP |
+| 15 | [Collector UX & go-to-market](docs/15-collector-ux-gtm.md) | The borrow flow, trust design, channels — and why the same hype that sells loans inflates collateral |
+| 16 | [Build & pilot plan](docs/16-build-plan.md) | Gated Phase 0→pilot execution sequence and graduation criteria |
+| 17 | [Parameters reference](docs/17-parameters-reference.md) | Single source of truth for every tunable + the invariant index |
 
 ## First principles (non-negotiable)
 
