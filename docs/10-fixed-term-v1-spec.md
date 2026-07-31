@@ -87,6 +87,12 @@ duration risk** we control with conservative parameters. That is a very good tra
   collateral → the BendDAO run vector is structurally weaker than in a mark-to-market pool).
 - **Recommendation:** launch **term-matched pooled** for UX, keep total lane cap small, and require
   the reserve invariant I-9. Consider a P2P/offerbook option later for large/bespoke cards.
+  > ⚠️ **Legal tension ([doc 14.2](14-legal-regulatory.md)):** a *curated pool where Magpie sets
+  > rates/LTV/eligible collateral/liquidation* is exactly the pattern **July 2026 SEC guidance flags
+  > as a possible security** (Reves notes / curator-managed vault). The **P2P/offerbook** structure
+  > (users set their own terms) largely removes that trigger. So the pooled-vs-P2P choice is **not
+  > just UX — it's a securities-law decision** and must be made with counsel; the safer default may
+  > be P2P, or a pool structured to avoid operator-set terms.
 
 ## 10.7 What v1 deliberately does NOT do
 - No mid-loan mark-to-market or price liquidations (that's the optional later layer).

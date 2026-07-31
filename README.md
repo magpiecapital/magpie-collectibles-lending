@@ -41,6 +41,7 @@ physical card*, nothing more.
 | 11 | [Competitive landscape](docs/11-competitive-landscape.md) | Jupiter Offerbook, Collector Crypt, Loopscale, TradFi — and where Magpie wins |
 | 12 | [Data sourcing](docs/12-data-sourcing.md) | Closing F-1/OQ-4: **PSA APR as the eBay-independent anchor** |
 | 13 | [Economic model & stress test](docs/13-economic-model.md) | Recovery math, drawdown-justified LTV bands, reserve sizing, break-even |
+| 14 | [Legal & regulatory](docs/14-legal-regulatory.md) | Flags for counsel: securities (the SEC curator-vault risk), pawn/usury, MSB, UCC lien perfection, AML/IP |
 
 ## First principles (non-negotiable)
 
