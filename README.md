@@ -37,6 +37,10 @@ physical card*, nothing more.
 | 7 | [Open questions & spikes](docs/07-open-questions.md) | Honest gaps that must close before mainnet |
 | 8 | [Adversarial review](docs/08-adversarial-review.md) | Red-team findings (F-1…F-11) and how each is resolved |
 | 9 | [Data spike results](docs/09-data-spike-results.md) | OQ-1…OQ-5 findings: drawdowns verified, incumbents exist, the fixed-term model, the independent-feed blocker |
+| 10 | [**Fixed-term v1 spec**](docs/10-fixed-term-v1-spec.md) | **The recommended launch model** — oracle-less, no price-liquidation, fixed-term |
+| 11 | [Competitive landscape](docs/11-competitive-landscape.md) | Jupiter Offerbook, Collector Crypt, Loopscale, TradFi — and where Magpie wins |
+| 12 | [Data sourcing](docs/12-data-sourcing.md) | Closing F-1/OQ-4: **PSA APR as the eBay-independent anchor** |
+| 13 | [Economic model & stress test](docs/13-economic-model.md) | Recovery math, drawdown-justified LTV bands, reserve sizing, break-even |
 
 ## First principles (non-negotiable)
 

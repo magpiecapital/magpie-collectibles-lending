@@ -35,8 +35,16 @@ gives us a fast liquidation rail — the missing piece for illiquid collateral.
 - **Caps:** per-card ~2–5% of book · per-character cap · small total lane cap sized to
   bear-market absorption · reserve buffer · withdrawal controls on the lender pool.
 
+## Recommended v1: fixed-term, no price-liquidation ([doc 10](10-fixed-term-v1-spec.md))
+The spike found the live incumbents (Jupiter Offerbook, Collector Crypt) lend against physical
+cards with **fixed-term, oracle-less, no-price-liquidation** loans — a model that **removes most of
+the Critical/High attack surface by construction** (no live mark-to-market to manipulate → liquidate).
+That's the recommended launch. Mark-to-market (docs 2–5) becomes an optional later layer.
+
 ## Status & gate to build
-Design-only. Four gaps must close first (see [doc 7](07-open-questions.md)): per-tier
-liquidity/drawdown quantification for the specific tokenized cards, exact CC *vault*
-buyback terms + divergence history, and confirmed comp-data API access. The
-[threat model](05-threat-model.md) must be signed off with no open High findings.
+Design-only. Per the [data spike](09-data-spike-results.md): OQ-2 (drawdowns) & OQ-5 (physical lien)
+✅ closed; OQ-1/OQ-3 🟡 partial; **OQ-4 downgraded 🔴→🟡** — PSA "Auction Prices Realized" (official
+API, multi-house, **eBay-independent**) resolves the F-1 independence requirement ([doc 12](12-data-sourcing.md)).
+Remaining before capital: confirm PSA API commercial terms, per-tier liquidity/CC-vault buyback
+terms, and sign off the [threat model](05-threat-model.md) with **no open Critical/High findings**.
+Economics work **only with the tighter drawdown-justified LTV bands** (A≤40/B≤35/C≤20, [doc 13](13-economic-model.md)).
