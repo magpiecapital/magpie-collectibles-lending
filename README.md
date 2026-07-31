@@ -11,6 +11,18 @@ exists to prove — before a line of on-chain code — that a card-backed loan c
 priced honestly, liquidated reliably, and defended against every attack we can
 enumerate, while staying attractive to collectors.
 
+## What this is — and is NOT
+**The collateral is the *physical* graded trading card** (Pokémon and similar) and its
+**real secondary-market value derived from actual sales.** This is a **physical-collateral
+lending product**, not an NFT product. Collector Crypt's token is used **only as the
+on-chain custody + redemption handle** — a redeemable claim on the physical card held in a
+vault — so a Solana program can hold the collateral. We **do not** value or liquidate based
+on NFT-market/floor dynamics (Magic Eden bids, PFP-style speculation); those are irrelevant.
+Value comes from the physical card market (eBay sold, PSA Auction Prices Realized,
+auction-house results); the exit is the card's physical value (Collector Crypt's buyback and
+physical resale). Wherever this doc says "pNFT," read it as *the custody token wrapping a
+physical card*, nothing more.
+
 ## Read in this order
 
 | # | Doc | What it answers |
@@ -24,6 +36,7 @@ enumerate, while staying attractive to collectors.
 | 6 | [Architecture](docs/06-architecture.md) | Components, invariants, custody, when it IS built |
 | 7 | [Open questions & spikes](docs/07-open-questions.md) | Honest gaps that must close before mainnet |
 | 8 | [Adversarial review](docs/08-adversarial-review.md) | Red-team findings (F-1…F-11) and how each is resolved |
+| 9 | [Data spike results](docs/09-data-spike-results.md) | OQ-1…OQ-5 findings: drawdowns verified, incumbents exist, the fixed-term model, the independent-feed blocker |
 
 ## First principles (non-negotiable)
 

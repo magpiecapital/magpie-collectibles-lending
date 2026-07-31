@@ -1,5 +1,12 @@
 # 7 · Open Questions & Spikes (must close before mainnet)
 
+> **UPDATE — a data spike has run against all five OQs; results + status in
+> [doc 9](09-data-spike-results.md).** Headline: OQ-2 (drawdowns) and OQ-5 (physical lien) are
+> ✅ closed; OQ-1/OQ-3 🟡 partially closed; **OQ-4 (an *independent* comp feed) is the 🔴 real
+> blocker** because the cheap APIs are all eBay-derived. The spike also surfaced that **Collector
+> Crypt already supports physical-card-backed lending** (Loopscale, Jupiter Offerbook) using a
+> **fixed-term, no-price-liquidation** model — see doc 9's strategic implications.
+
 The research proved the *risks* qualitatively and gave us the valuation/liquidation
 *methodology*, but left four things unquantified. We do not fabricate these — each is
 a spike with a definition of done. **No mainnet until all four are green and the
