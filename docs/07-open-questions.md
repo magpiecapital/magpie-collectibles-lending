@@ -40,6 +40,13 @@ cross-check; its real terms set the circuit-breaker thresholds.
 reference vs contemporaneous realized comps to measure divergence. **Done when:** we
 have the real rate, the pull-time-freeze behavior, and a measured divergence
 distribution.
+**→ STATUS 🔴 (researched, [doc 19.2](19-oq-closeout.md)):** the buyback is **Gacha-only,
+72h-from-pull, off-chain, capped 40k USDC** — there is **NO standing bid for a held vaulted
+card** and **no on-chain-readable price**. It is **not** our liquidation rail and not an oracle;
+CC's insured value is a counterparty-set, off-chain, heavily-haircut cross-check at best. This
+**overturns the "buyback = primary exit" assumption** in docs 2/4/9 → liquidation must be rebuilt
+around thin-market pNFT resale + physical redemption, and it reinforces fixed-term v1. Residual
+unknowns (standing bid? on-chain feed? bailee/lien? proof-of-reserves?) → **direct CC outreach**.
 
 ## OQ-4 · Comp-data API access & terms
 **Unknown:** which realized-comp sources we can actually consume programmatically
@@ -53,6 +60,14 @@ feeds; without them the whole "real comps, not listings" guarantee is theoretica
 **Spike:** contact/verify eBay, PSA, Card Ladder access + rate limits + cost + TOS.
 **Done when:** we have ≥2 confirmed, license-clean feeds with sufficient Pokémon
 coverage and rate limits for daily mark-to-market.
+**→ STATUS 🟡 (researched, [doc 19.1](19-oq-closeout.md)):** independence is **achievable but not
+cheap self-serve**. Anchors = **Heritage prices-realized** (own house, cleanest), **PSA APR's
+non-eBay slice** (Heritage/Memory Lane, keyed to cert/grade — but APR is web-only, needs a PSA
+commercial license), and **Card Ladder** (multi-venue, enterprise API). All need an **outreach +
+data-license conversation**; every *self-serve* API is eBay-derived (corroboration only).
+Corrections: **PWCC = Fanatics-owned (independent of eBay); only Goldin = eBay-owned.** PSA free
+API = **100 calls/day, cert-verification only** (APR not in the API). Design must **degrade safely**
+when the independent signal is sparse/stale, never silently fall back to eBay-only.
 
 ## OQ-5 · Physical-lien enforcement by Collector Crypt (from adversarial finding F-5)
 **Unknown:** our on-chain NFT lock cannot, by itself, stop the **physical** card from
