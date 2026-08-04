@@ -99,8 +99,59 @@ eBay corroboration + marketplace floor), and treat each issuer's FMV/buyback onl
 haircut cross-check* — never the oracle.
 
 ## 20.5 Broader authenticated-collectible tokenizers (spirits / watches / luxury)
-*(Second research thread — filled when it returns: BAXUS and other non-card authenticated-RWA
-tokenizers, evaluated on the same collateral-source criteria.)*
+
+Two findings frame the whole non-card space:
+- **The on-chain-oracle gap is universal — and it's our wedge.** No platform anywhere (BAXUS, Courtyard,
+  Phygitals, Kettle, Collector Crypt) exposes a robust, program-readable, per-asset market value. Every
+  one prices off-chain and single-source (Card Ladder / eBay / BoozApp / WatchCharts) or by discretionary
+  company quote. General oracles (Pyth/Chainlink/RedStone) carry **zero** collectible/luxury feeds. So
+  **whatever we lend against, we build the cross-sourced comps oracle ourselves** — exactly the moat.
+- **Regulatory line (SEC/CFTC joint interpretation, 2026-03-17):** **1:1 whole-item redeemable collectible
+  NFTs = non-securities** (clean for permissionless collateral) absent profit-sharing/fractionalization/
+  investment marketing. Every **fractional-ownership** platform (Masterworks, Rally, Particle, Freeport,
+  Arkefi) is an investment-contract security → KYC-gated, un-permissionless. **Rule: favor 1:1 vault NFTs;
+  avoid all fractional tokens.** (Ties to [doc 14](14-legal-regulatory.md)/[doc 18](18-structure-decision-memo.md).)
+
+| Platform | Class | Chain | Auth / custody | On-chain value? | Native lending | Verdict |
+|---|---|---|---|---|---|---|
+| **BAXUS** | Whisky/spirits | **Solana** | 360-scan + RFID, burn-on-redeem; own insured vault | No (BoozApp, 45+ sources off-chain) | **Yes, LIVE** (Bridgesplit, $500k+) | **MED-HIGH — #1 non-card** |
+| **Kettle** | Luxury watches | Blast L2 | In-house + Watch Register; NYC vault, **Lloyd's-insured** | No (P2P negotiated) | Yes (P2P, ~$1.35M) | **LOW-MED — model, wrong chain** |
+| **dVIN Labs** | Investment-grade wine | **Solana** | DePIN sensors + "Digital Cork" | No | No | **MED — right asset, early** |
+| **Artifacte** | Cards/spirits/wine | **Solana** | PSA/CGC claimed; custody **undisclosed** | No | No | **MED-trust / HIGH-watch** |
+| **BlockBar** | Wine/spirits | Ethereum | Brand-issued, Singapore vault | No | No | **LOW-MED** |
+| **Mattereum** | Gold/whisky/art | EVM | **Expert warranties + arbitration** (asset passport) | No | No | **LOW source / HIGH model** |
+
+### The picks beyond trading cards
+1. **Fine spirits / whisky via BAXUS — the clear #1 additional class.** Only non-card platform that is
+   **Solana-native**, has strong **serial + RFID** authentication, exposes a **dense realized-price
+   dataset** (BoozApp, 75k+ bottles), and **already runs a live on-Solana lending market** (Bridgesplit,
+   $500k+ originated — proving borrower demand + a liquidation rail exist). Bottle-serial auth is clean
+   and, like graded cards, spirits have **dense realized-sales comps** — the two easiest classes to
+   underwrite under [doc 21](21-liquidity-eligibility-proof-of-sale.md). Gaps to engineer: off-chain value
+   (our oracle bridge, cross-sourced vs external whisky indices) + thin per-bottle liquidity (→ conservative
+   LTV, recover via marketplace/redemption, never open-market dumping). **Natural first expansion beyond CC cards.**
+2. **Luxury watches — best asset class by comp density, no viable on-chain token source yet.**
+   WatchCharts/Chrono24 give the deepest realized-sales data of any luxury vertical and watches liquidate
+   better than one-of-a-kind items — but the only live custody+lending operator (Kettle) is on Blast, tiny,
+   and prices bilaterally. **Strong future target if we custody/partner ourselves**, sourcing comps directly.
+3. **Sports memorabilia via Phygitals (Solana)** — adjacent to cards, multi-vault custody, Fanatics
+   distribution; lending is roadmap. A near-term Solana partner to watch (an extension of the card thesis).
+
+### Anti-patterns to encode in the risk model
+- **USDR / Tangible (Oct 2023):** illiquid-RWA backing + on-demand redemption + reflexive collateral = bank
+  run. Never let redemption/liquidation assume liquidity the underlying doesn't have.
+- **Particle:** a "no financial interest / no redemption" token has **no enforceable claim → un-lendable.**
+  We require a **hard, on-chain-enforceable liquidation claim** on the authenticated asset, marked at
+  **discounted realized-comp value** ([doc 21](21-liquidity-eligibility-proof-of-sale.md)) — never floor/listing.
+- **Single-vault custody is universal** (PWCC / Brink's / Lloyd's / PSA-Alt-Fanatics); only Phygitals is
+  building proof-of-reserves (not live). Underwrite **platform-insolvency / orphaned-token** risk explicitly.
+
+### Deprioritized / avoid
+- **Fine art** (one-of-a-kind → no comps, no liquidation rail; mostly fractional-securities or defunct) and
+  **handbags** (sparse comps, compressing premiums, trademark risk) — off the proven-liquidity thesis.
+- **Defunct/vaporware — do NOT chase:** 4K, Arkefi, Particle, RTFKT/Nike, StockX Vault NFTs, Dibbs, Otis,
+  Maecenas, WiV, SYKY; "Tialabs" has no verifiable footprint; no "Privé/LVMH" watch-tokenizer exists
+  (Aura = passports only); Masterworks/Rally are off-chain Reg-A+ securities.
 
 ## 20.6 Recommendation
 Diversify beyond Collector Crypt onto a **short allowlist of vetted issuers**, each its own capped lane:
