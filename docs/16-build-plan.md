@@ -56,7 +56,7 @@ Build the lending program + NFT vault PDA reusing Magpie's non-custodial vault/d
 
 ### Phase 5 — Tightly-capped pilot
 - **Small blue-chip allowlist** (Tier-A only at first — the most liquid, best-comped cards).
-- **Launch LTV bands A≤40 / B≤35 / C-excluded** ([doc 13](13-economic-model.md)); short terms (30–90d).
+- **Launch LTV bands A≤50 / B≤40 / C≤25** ([doc 13](13-economic-model.md)); 50% gated to L1 Tier-A only; short terms (30–90d).
 - **Small total lane cap**, per-card/per-character caps, full reserve (I-9), **kill-switch**, manual
   review on every high-value card.
 - **Circuit-breaker** wired to the CC buyback rate/availability ([doc 4.3](04-liquidation-risk.md)).

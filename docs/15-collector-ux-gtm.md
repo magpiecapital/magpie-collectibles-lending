@@ -22,7 +22,7 @@ trust design, and how we reach collectors.
 Connect wallet ─▶ Pick a vaulted card you own (or Collector-Crypt-held)
    ─▶ Instant eligibility + APPRAISAL shown transparently:
         "PSA 10 Base Charizard · cert #… · appraised $X (from N real sales, updated <date>)
-         · you can borrow up to $Y (≤40% LTV) · fixed 60-day term · Z% APR · no liquidations"
+         · you can borrow up to $Y (≤50% LTV) · fixed 60-day term · Z% APR · no liquidations"
    ─▶ Accept ─▶ card locks in vault, USDC to wallet (minutes)
    ─▶ Dashboard: due date, payoff amount, big clear "your card is safe until <date>" status
    ─▶ Repay ─▶ card unlocks. (Or extend / partial-repay before maturity.)

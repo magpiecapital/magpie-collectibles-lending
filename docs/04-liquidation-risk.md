@@ -54,9 +54,9 @@ live-price margin call. On default, recover in this order:
    reserve/insurance fund (I-9)** — never other borrowers' collateral, never socialized loss that triggers
    a run.
 
-The whole waterfall is affordable because we lent **≤40% of an already-haircut AV** on an item with
+The whole waterfall is affordable because we lent **≤50% of an already-haircut AV** (top tier; less down-tier) on an item with
 **proven, recent, multi-venue sales**. Even a graduated markdown or a physical-resale recovery clears
-principal with cushion in a bear market. **Proven liquidity at origination IS the liquidation plan.**
+principal in the median case; the reserve covers the worst-case tail (the top tier is reserve-covered beyond a ~−33% term-drawdown — [doc 13](13-economic-model.md)). **Proven liquidity at origination IS the liquidation plan.**
 
 ## 4.3 The circuit-breaker (liquidity + counterparty defense)
 We do **not** depend on any issuer buyback as a backstop (OQ-3). We monitor the **real
