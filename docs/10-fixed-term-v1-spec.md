@@ -53,18 +53,19 @@ duration risk** we control with conservative parameters. That is a very good tra
 - **LTV bands** (on AV; validated by the verified ~40–70% drawdowns, where even blue-chips ~halved):
   | Tier | Max LTV | Rationale |
   |------|:------:|-----------|
-  | A (blue-chip vintage, dense comps) | **≤50%** | a blue-chip can fall ~40–50% over a term; 50% + buyback backstop still recovers |
+  | A (blue-chip vintage, dense comps; L1 only) | **≤50%** | a blue-chip can fall ~40–50% over a term; 50% self-covers to ~−33%, reserve covers the tail (no buyback backstop — [doc 19.2](19-oq-closeout.md)) |
   | B (liquid graded) | **≤40%** | thinner + more volatile |
   | C (thin/modern/reprint-exposed) | **≤25% or exclude** | can fall 60–70%; only lend low or not at all |
 
   These sit at/below the TradFi card-loan market (typically 40–60% LTV) — we compete on safety,
   speed, keeping-your-card, and honest pricing, not on the highest advance rate.
 
-  > ⚠️ **The [economic model](13-economic-model.md) recommends launching one notch tighter —
-  > A ≤40% · B ≤35% · C ≤20%** — because against the *verified* worst-case drawdowns (blue-chip
-  > ~−45%, thin ~−70%) plus buyback fees, the 50/40/25 bands only break even. Use the tighter
-  > bands at launch; loosen only if OQ-1 proves the specific tokenized cards are more liquid/less
-  > volatile than the market.
+  > **Launch bands = A ≤50 · B ≤40 · C ≤25 (operator-set 2026-08-04, [doc 13.2](13-economic-model.md)).**
+  > With no buyback backstop (OQ-3), 50% **self-covers a term-drawdown only to ~−33%**; beyond that,
+  > into the verified −45% blue-chip worst case, the shortfall is **reserve-covered (I-9, ~10–15% of
+  > book)** — so 50% is **gated to L1 highly-liquid Tier-A** on the shortest terms, and the reserve +
+  > proven-liquidity gate ([doc 21](21-liquidity-eligibility-proof-of-sale.md)) carry the tail. Raise
+  > above 50% only once OQ-1 liquidity + a clean resale-liquidation + reserve adequacy are proven.
 
 ## 10.5 Maturity & settlement (no mid-loan liquidation)
 - **Repay in full → card unlocked and returned.** The normal, desired path.

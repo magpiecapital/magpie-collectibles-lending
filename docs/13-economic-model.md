@@ -1,84 +1,101 @@
 # 13 · Economic Model & Stress Test
 
-Turns the strategy into numbers: do the LTV bands, the buyback backstop, and the reserve actually
-keep the book solvent through a verified-magnitude drawdown? All figures are **illustrative model
-inputs** for sizing, not forecasts — plug real data (OQ-1/OQ-3) before committing capital.
+Turns the strategy into numbers: do the LTV bands, the **resale recovery** rail, and the reserve keep
+the book solvent through a verified-magnitude drawdown? All figures are **illustrative model inputs**
+for sizing, not forecasts — plug real data (OQ-1) before committing capital.
 
-> Model applies to the [fixed-term v1](10-fixed-term-v1-spec.md): one appraisal at origination, no
-> mid-loan liquidation, settle at maturity via buyback → physical resale.
+> **Rebuilt 2026-08-04 for the OQ-3 reality ([doc 19.2](19-oq-closeout.md)):** the Collector Crypt
+> buyback is NOT a reliable liquidation rail (Gacha-only, 72h, off-chain — no standing bid on a held
+> card), so the earlier ~87% buyback assumption is **removed**. Recovery is modeled on **graduated
+> marketplace resale + burn-to-physical resale** of a **proven-liquid** item ([doc 21](21-liquidity-eligibility-proof-of-sale.md)),
+> assuming **zero buyback**. Model applies to [fixed-term v1](10-fixed-term-v1-spec.md).
 
-## 13.1 Recovery math on a single defaulted loan
-Notation: `AV` = appraised value at origination (already haircut, = min(independent comp, buyback)).
-Loan = `LTV × AV`. Over the term the card's true value moves by `d` (a drawdown is `d<0`). At default
-we recover through the CC buyback at ~`β` of *current* value (β ≈ 0.85–0.90), net of fees `f`
-(buyback ~4% platform; marketplace ~2%; withdrawal 2%).
+## 13.1 Recovery math on a single defaulted loan (no buyback)
+Notation: `AV` = appraised value at origination (already haircut, = min(independent realized comp,
+issuer quote)). Loan = `LTV × AV`. Over the term the item's value moves by `d` (drawdown = `d<0`). At
+default we recover by **selling the proven-liquid item**, netting a fraction `βᵣ` of *current* value
+after all costs.
 
 ```
-current_value   = AV × (1 + d)
-recovery        ≈ β × current_value × (1 − f)
-covered  ⇔  recovery ≥ Loan × (1 + r·t)         # principal + interest over term
+current_value = AV × (1 + d)
+recovery      ≈ βᵣ × current_value                 # βᵣ already net of resale/consignment/shipping fees
+covered  ⇔  recovery ≥ Loan × (1 + r·t)            # principal + interest over term
 ```
 
-**Worst-case per tier** (using the verified drawdowns from [doc 9](09-data-spike-results.md), β=0.87,
-f≈6%, interest small over a 30–90d term):
+**`βᵣ` (net resale recovery)** — no buyback floor: marketplace graduated markdown ≈ **0.75–0.85** normal
+/ **0.65–0.75** thin-bear; burn-to-physical + consignment ≈ **0.80–0.87** but slow (weeks). **Base-case
+planning `βᵣ = 0.75`**, stressed to **0.65**.
 
-| Tier | LTV | Modeled worst term-drawdown `d` | Recovery vs loan | Covered? |
-|------|:---:|:---:|---|:---:|
-| A | 50% | −45% (blue-chip ~halved in 2022–23) | `0.87·0.55·0.94·AV = 0.45·AV` vs `~0.50·AV` | **~break-even → thin loss** |
-| A | **40%** (recommended launch) | −45% | `0.45·AV` vs `~0.40·AV` | ✅ **covered** |
-| B | 40% | −55% | `0.87·0.45·0.94·AV = 0.37·AV` vs `~0.40·AV` | ⚠️ **short → reserve** |
-| B | **35%** | −55% | `0.37·AV` vs `~0.35·AV` | ✅ **covered** |
-| C | 25% | −70% | `0.87·0.30·0.94·AV = 0.245·AV` vs `~0.25·AV` | ⚠️ **razor-thin** |
+**Per tier at the chosen bands** (verified drawdowns from [doc 9](09-data-spike-results.md); `βᵣ=0.75`):
 
-**Key finding:** the doc-3 headline bands (A 50 / B 40 / C 25) are **too aggressive against the
-*verified* worst-case drawdowns** once buyback fees are included. **Recommended launch bands are
-one notch tighter: A ≤40%, B ≤35%, C ≤20% or exclude.** This is the single most important number in
-the whole strategy — it's set by real drawdown history, not optimism. (The looser bands only work if
-OQ-1 shows the specific tokenized cards are more liquid / less volatile than the market — prove it first.)
+| Tier | LTV | Worst term-drawdown `d` | Recovery `βᵣ·(1+d)·AV` | vs Loan | Self-covers to `d` = | Worst-case status |
+|------|:---:|:---:|:---:|:---:|:---:|:---:|
+| **A (chosen)** | **50%** | −45% | `0.75·0.55 = 0.41·AV` | ~0.50·AV | **−33%** | ⚠️ −0.09·AV → **reserve** |
+| A (alt) | 40% | −45% | `0.41·AV` | ~0.40·AV | −47% | ✅ self-covers |
+| A (rejected) | 60% | −45% | `0.41·AV` | ~0.60·AV | −20% | ❌ big loss |
+| **B (chosen)** | **40%** | −55% | `0.75·0.45 = 0.34·AV` | ~0.40·AV | −47% | ⚠️ −0.06·AV → reserve |
+| **C (chosen)** | **25%** | −70% | `0.75·0.30 = 0.225·AV` | ~0.25·AV | −67% | ⚠️ −0.025·AV → reserve |
 
-## 13.2 Why fixed-term + short duration matters here
-The `d` above is the drawdown **over the loan term**, not peak-to-trough over years. A 30–90d term
-caps `d` far below the multi-year −45%/−70% figures — those are the *absolute* worst case if a crash
-lands entirely within one term. Short terms are what make even the tighter bands comfortable in the
-median case while surviving the tail.
+## 13.2 The LTV decision (operator, 2026-08-04)
+**Chosen launch bands: A ≤ 50% · B ≤ 40% · C ≤ 25%.** (Recommendation had been ≤40 top; operator set
+the Tier-A ceiling at **50%** — a defensible middle between the ≤40 self-covering line and the ≤60 I
+advised against.) What 50% means, honestly:
+- **50% self-covers a term-drawdown down to ~−33%.** Beyond that — into the verified −45% blue-chip
+  worst case — the ~9%-of-AV shortfall is **absorbed by the reserve (I-9)**, not self-covered. That is
+  an acceptable, *deliberate* use of the reserve **provided** it's sized for it (§13.4) and 50% is
+  **gated to only L1 highly-liquid Tier-A** (weekly-selling blue-chips, densest comps) on the
+  **shortest terms** — never extended down-tier.
+- **It stays well clear of 60%**, which only survives a <20% drawdown — untenable for an asset class
+  with 45–70% peak-to-trough and 12–25%/72h hype reversals ([doc 15](15-collector-ux-gtm.md)).
+- **It sits at/below the RWA-equity band** (Magpie V3 stocks 50–70%): a single graded card is more
+  volatile and far thinner to liquidate than tokenized equities, so parity-at-the-top (50% vs equities'
+  50% floor) is the ceiling, not a starting point.
+- **Buyback is NOT a buffer** (OQ-3). The margin of safety is now four stacked buffers — **proven-
+  liquidity gate ([doc 21](21-liquidity-eligibility-proof-of-sale.md)), haircut appraisal, conservative
+  LTV, short duration — plus a larger reserve.** 50% spends a bit of the LTV buffer, so the reserve and
+  the liquidity gate must be correspondingly strict.
+- **Guardrail:** do not raise 50% further, and do not apply it below L1, until real book data (OQ-1) +
+  ≥1 clean resale-liquidation proving `βᵣ` + demonstrated reserve adequacy are in hand.
 
-## 13.3 Book-level stress test (the BendDAO scenario, run against us)
-Scenario: a hobby-wide crash lands, **all** collateral drops ~40–70% within a term, **and** the CC
-buyback is degraded (paused or rate-cut → circuit-breaker halts new loans; recoveries route to slow
-physical resale at a markdown).
-- With launch LTVs (A40/B35/C20) and the buyback backstop, **most loans still self-cover**; losses
-  concentrate in the thin tiers and in the buyback-off tail.
-- **Reserve must cover the residual (invariant I-9).** Rough sizing: if modeled tail loss is `L%` of
-  the book under the joint stress, `reserve ≥ L% × book`. Illustratively, a 5–10% reserve-to-book
-  ratio is a starting hypothesis to validate with the real drawdown/liquidity data; **originations
-  auto-halt if the ratio degrades**, and reserve exhaustion → orderly wind-down (never socialized loss).
-- **Concentration caps** (per-card 2–5%, per-character, total lane) ensure no single position or
-  correlated bucket can breach the reserve alone.
+## 13.3 Why fixed-term + short duration matters here
+`d` is the drawdown **over the loan term**, not peak-to-trough over years. A 30–90d term caps `d` far
+below the multi-year −45%/−70% figures. Short terms make the bands comfortable in the median case while
+the reserve covers the tail — and because there's no mid-loan margin call, a *slow* physical-resale
+recovery is fine (no forced fire-sale).
 
-## 13.4 Revenue & break-even (does the book make money?)
-Per loan: `revenue = r·t·Loan + any fees`; `cost = expected_default_rate × expected_loss_given_default
-+ liquidation/recovery cost + capital cost + ops`.
-- Because loans are **over-collateralized with a buyback backstop**, **loss-given-default is small**
-  in the median case (recovery ≥ loan), so the book is profitable at modest rates *provided* LTVs are
-  set per §13.1.
-- **Rate benchmark:** competitors sit at ~9–10% (CC) with no origination fee; TradFi 13–15% + fees.
-  A launch APR in the **~10–14%** range (tiered) beats TradFi, is competitive on-chain, and prices in
-  the higher operational/appraisal cost of curated underwriting.
-- **The margin is safety, not spread.** The book is designed so it makes steady interest in normal
-  times and **survives** the tail — not to maximize yield by pushing LTV.
+## 13.4 Book-level stress test (BendDAO scenario, run against us — ZERO buyback)
+Scenario: hobby-wide crash, **all** collateral −40–70% within a term, resale thin (`βᵣ→0.65`), **no
+buyback at all**.
+- At A50/B40/C25 with `βᵣ=0.65`, **every tier leans partly on the reserve at the worst case** (50% is
+  reserve-covered beyond −33%). This is by design — but it makes reserve sizing the load-bearing number.
+- **Reserve (invariant I-9): start hypothesis ~10–15% of book** (raised from the old 5–10%, because the
+  buyback buffer is gone AND the top tier is reserve-covered at the tail). Validate on real data;
+  originations **auto-halt if the ratio degrades**; exhaustion → orderly wind-down (never socialized loss).
+- **Concentration caps** (per-card ≤ a fraction of trailing realized volume, per-character, total lane,
+  per-platform — [doc 21](21-liquidity-eligibility-proof-of-sale.md) §21.5) keep any single position or
+  correlated bucket from breaching the reserve alone. With a 50% top tier, the **per-card and
+  per-character caps get tighter**, not looser.
 
-## 13.5 Parameters to calibrate with real data (before any capital)
+## 13.5 Revenue & break-even
+Per loan: `revenue = r·t·Loan + fees`; `cost = default_rate × loss_given_default + recovery cost +
+capital + ops`. Conservative LTV on **proven-liquid** collateral keeps median-case recovery ≥ loan, so
+loss-given-default is contained even without a buyback. **Rate:** on-chain card lenders ~9–10%; TradFi
+13–15%+fees. Launch APR **~10–14%** (tiered) beats TradFi and prices in appraisal + slower recovery.
+**Margin is safety, not spread.**
+
+## 13.6 Parameters to calibrate with real data (before any capital)
 | Parameter | Source to close it |
 |---|---|
 | Per-tier term-drawdown `d` | OQ-2 (have market-level; need term-window + per-tier distribution) |
-| Buyback rate β, fees f, availability | OQ-3 (CC vault terms + divergence history) |
-| Per-tier liquidity / time-to-sell (fallback recovery) | OQ-1 (CC native marketplace + PSA APR) |
-| Expected default rate | pilot data; TradFi analog (pawn ~85% repay → ~15% forfeit, but forfeits are profitable at low LTV) |
-| Reserve ratio (I-9) | run this model on real inputs |
+| **Net resale recovery `βᵣ` + time-to-clear** | OQ-1 (marketplace depth) + a real liquidation; whisky/watch analogs |
+| Per-tier liquidity / time-to-sell | OQ-1 (CC/Courtyard/Phygitals marketplaces + PSA-APR realized) |
+| Expected default/forfeit rate | pilot; pawn analog (~85% repay → ~15% forfeit; profitable at low LTV) |
+| Reserve ratio (I-9) | run this model on real inputs (start ~10–15% hypothesis) |
 
-## 13.6 Bottom line
-The economics **work** under the fixed-term model **only with the tighter, drawdown-justified LTV
-bands (A≤40 / B≤35 / C≤20)** and a live reserve invariant (I-9). The margin of safety comes from
-three stacked buffers — **haircut appraisal, conservative LTV, and the ~85–90% buyback floor** — not
-from any single one. Do not loosen any buffer to chase volume; the verified 40–70% drawdowns are the
-reason each exists.
+## 13.7 Bottom line
+The economics **work** under fixed-term v1 with the operator-chosen bands **A ≤ 50 / B ≤ 40 / C ≤ 25**
+— but 50% is a deliberate spend of the LTV buffer, so it holds **only** with (a) 50% gated to L1
+highly-liquid Tier-A, (b) a **larger reserve (~10–15%)** because the buyback buffer is gone and the top
+tier is reserve-covered at the tail, and (c) the strict proven-liquidity gate. The margin of safety is
+**proven-liquidity + haircut appraisal + conservative LTV + short duration + reserve** — not a vendor's
+revocable buyback. Earn any increase above 50% with real data; never loosen a buffer to chase volume.

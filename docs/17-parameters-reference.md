@@ -32,7 +32,7 @@ not final*. Where a later doc tightened an earlier one, the tighter value wins (
 ## 17.3 Underwriting / LTV / terms
 | Parameter | Launch value | Source |
 |---|---|---|
-| **LTV — Tier A** (blue-chip vintage, dense comps) | **≤40%** (tightened from 50%) | [doc 13.1](13-economic-model.md) |
+| **LTV — Tier A** (blue-chip vintage, dense comps, L1 only) | **≤50%** (operator-set 2026-08-04; reserve-covered at the tail) | [doc 13.2](13-economic-model.md) |
 | **LTV — Tier B** (liquid graded) | **≤35%** (tightened from 40%) | doc 13.1 |
 | **LTV — Tier C** (thin/modern/reprint) | **≤20% or exclude** (tightened from 25%) | doc 13.1 |
 | Loan duration | 30–90 days, fixed | [doc 10.4](10-fixed-term-v1-spec.md) |

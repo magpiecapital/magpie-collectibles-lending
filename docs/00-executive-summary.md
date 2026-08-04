@@ -47,4 +47,4 @@ Design-only. Per the [data spike](09-data-spike-results.md): OQ-2 (drawdowns) & 
 API, multi-house, **eBay-independent**) resolves the F-1 independence requirement ([doc 12](12-data-sourcing.md)).
 Remaining before capital: confirm PSA API commercial terms, per-tier liquidity/CC-vault buyback
 terms, and sign off the [threat model](05-threat-model.md) with **no open Critical/High findings**.
-Economics work **only with the tighter drawdown-justified LTV bands** (A≤40/B≤35/C≤20, [doc 13](13-economic-model.md)).
+Economics work with the drawdown-justified LTV bands **A≤50 / B≤40 / C≤25** ([doc 13](13-economic-model.md)) + a **~10–15% reserve** — the top tier is reserve-covered at the tail since the buyback is not a backstop ([doc 19.2](19-oq-closeout.md)).

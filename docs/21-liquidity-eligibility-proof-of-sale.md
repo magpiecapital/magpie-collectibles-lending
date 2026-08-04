@@ -42,7 +42,7 @@ For items that pass §21.2, classify by how *often* and how *recently* they actu
 
 | Tier | Sale frequency (trailing 12mo) | Recency of last sale | Realized-price dispersion | → Max LTV band |
 |---|---|---|---|---|
-| **L1 — Highly liquid** | ≥ **12** sales (~weekly) | ≤ **14 d** | tight (IQR/median ≤ ~20%) | Tier A (≤40%) |
+| **L1 — Highly liquid** | ≥ **12** sales (~weekly) | ≤ **14 d** | tight (IQR/median ≤ ~20%) | Tier A (≤50%) |
 | **L2 — Liquid** | ≥ **6** (~monthly) | ≤ **30 d** | ≤ ~30% | Tier B (≤35%) |
 | **L3 — Marginally liquid** | ≥ **4** (~quarterly) | ≤ **90 d** | ≤ ~40% | Tier C (≤20%) |
 | **Below L3** | — | — | — | **INELIGIBLE** |
@@ -102,7 +102,7 @@ Proven liquidity also *bounds size* — we can only lend what the real market ca
 
 ## 21.7 Worked examples
 - **✅ Base Set Charizard, PSA 10:** dozens of realized sales/yr across eBay + Heritage + PWCC, last sale
-  days ago, tight dispersion, PSA-APR (non-eBay) corroborates. → **L1, Tier A ≤40% of AV.**
+  days ago, tight dispersion, PSA-APR (non-eBay) corroborates. → **L1, Tier A ≤50% of AV.**
 - **✅ Modern chase card, PSA 10, hot but real:** ≥6 sales/yr, last ≤30d, multi-seller/venue, comps agree.
   → **L2, Tier B ≤35%.**
 - **⚠️ Semi-liquid vintage, PSA 8:** 4 sales/yr, last 70d, wider dispersion. → **L3, Tier C ≤20%**, extra
