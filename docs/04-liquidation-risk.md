@@ -20,41 +20,61 @@ threshold 85%→70%, auction 48h→4h, **removed the 95%-floor min-bid**, rates 
 minimum. Allow graduated markdown to a real clearing price. Size everything for a
 bear market with no bidders.**
 
-## 4.2 The liquidation waterfall
-Triggered by any of: **maturity default**, **maintenance-LTV breach (~70%)**, or
-**eligibility loss** (value went stale, cert flagged, buyback pulled).
+## 4.2 The liquidation waterfall (v1 = fixed-term; recover by RESELLING what we proved is liquid)
+> **Correction (OQ-3, [doc 19.2](19-oq-closeout.md)):** earlier drafts made the Collector Crypt
+> buyback the *primary* exit at ~85–90%. **That was wrong.** CC's buyback is **Gacha-only, 72h-from-pull,
+> off-chain, with NO standing bid for a held card** — and no tokenization platform ([doc 20](20-tokenization-platforms-collateral-sources.md))
+> hands a lender a reliable liquidation bid. So the rail is **resale into the market we already PROVED is
+> liquid at origination ([doc 21](21-liquidity-eligibility-proof-of-sale.md))** — never a dependency on an
+> issuer buyback.
 
-1. **Primary — Collector Crypt buyback.** Execute the standing on-chain buyback
-   (~85–90% of CC reference, ~2% fee). Fast, cheap, deterministic. Because we lent
-   ≤50% of an already-haircut AV, buyback proceeds almost always cover principal +
-   interest with cushion. This is the base case and it should be the vast majority
-   of liquidations.
-2. **Fallback — marketplace, graduated Dutch markdown with a reserve.** If the buyback
-   is unavailable (paused, rate-cut below a floor, or the card is ineligible for
-   buyback), list on Collector Crypt's marketplace / Magic Eden starting near the mark
-   and **stepping the price down over a short, bounded window until it clears.** We
-   accept a graduated markdown; we do **not** hold illiquid collateral hoping for a bid
-   (BendDAO's fatal choice). **But not floorless (finding F-6):** the auction carries a
-   **non-make-whole reserve price tied to the independent comp mark** (e.g. floor at a
-   defined fraction of independent AV) plus **anti-snipe protection (commit-reveal)**. This
-   is fully compatible with the BendDAO invariant (I-5), which forbids only a *make-whole*
-   peg — not a sane reserve. And because a **third party** can grief-trigger a
-   liquidation to snipe the auction, the down-mark that triggers liquidation gets the
-   same anti-manipulation + **confirmation lag** as an up-mark (finding F-6).
-3. **Settlement.** Proceeds repay principal + interest + liquidation cost. **Surplus
-   returns to the borrower.** Any **shortfall is absorbed by the reserve/insurance
-   fund** — never by other borrowers' collateral, never by socialized loss that
-   triggers a run.
+In v1 ([doc 10](10-fixed-term-v1-spec.md)/[doc 18](18-structure-decision-memo.md): fixed-term, no
+mid-loan price-liquidation), the trigger is **maturity default** — the borrower didn't repay — not a
+live-price margin call. On default, recover in this order:
 
-## 4.3 The circuit-breaker (counterparty defense)
-The buyback is Collector Crypt's, not ours. We monitor it **live**:
-- Track the published buyback **rate** and **availability** per card / globally.
-- If the rate drops below a threshold, buybacks pause, or CC's reference diverges
-  hard from independent comps → **halt new originations immediately** (existing loans
-  continue, liquidations route to the marketplace fallback).
-- Total exposure is capped (below) so that **even if the buyback disappears entirely**,
-  we can offload the whole book through the marketplace over a reasonable window
-  without breaching the reserve.
+1. **Opportunistic issuer buyback — only if actually available.** If the item's platform has a *live,
+   applicable* buyback at that moment (e.g., **Courtyard's** instant buyback; almost never CC, which is
+   Gacha-only), take it — fast and cheap. **Never assumed** — it's checked, and skipped when absent (the
+   common case). This is a first-check convenience, not the plan.
+2. **Primary — marketplace resale, graduated to a real clearing price.** Sell the tokenized card on its
+   marketplace (CC / Magic Eden / Courtyard) starting near the independent realized mark and **stepping
+   the price down over a bounded window until it clears.** This is viable *precisely because
+   [doc 21](21-liquidity-eligibility-proof-of-sale.md) admitted only proven-liquid items* — things that
+   demonstrably sell, repeatedly and recently. We accept a graduated markdown; we do **not** hold illiquid
+   collateral hoping for a bid (BendDAO's fatal choice). **Not floorless (finding F-6):** a **non-make-whole
+   reserve price** tied to the independent comp mark + **anti-snipe (commit-reveal)**; compatible with the
+   BendDAO invariant (I-5), which forbids only a *make-whole* peg, not a sane reserve. Because a third party
+   could grief-trigger, the down-mark gets the same confirmation lag as an up-mark.
+3. **Secondary — burn-to-physical + physical resale.** If the on-chain marketplace is too thin to clear
+   fairly, **redeem the token for the physical card** and sell it through the deep physical channels that
+   [doc 21](21-liquidity-eligibility-proof-of-sale.md) already used as comps (eBay / Heritage / PWCC
+   consignment). Slower (redemption SLA + consignment), which is exactly why v1 is **fixed-term + low LTV +
+   reserve** — we can take our time instead of fire-selling.
+4. **Settlement.** Proceeds repay principal + interest + cost. **Surplus → borrower.** Any **shortfall →
+   reserve/insurance fund (I-9)** — never other borrowers' collateral, never socialized loss that triggers
+   a run.
+
+The whole waterfall is affordable because we lent **≤40% of an already-haircut AV** on an item with
+**proven, recent, multi-venue sales**. Even a graduated markdown or a physical-resale recovery clears
+principal with cushion in a bear market. **Proven liquidity at origination IS the liquidation plan.**
+
+## 4.3 The circuit-breaker (liquidity + counterparty defense)
+We do **not** depend on any issuer buyback as a backstop (OQ-3). We monitor the **real
+market's liquidity** and each **platform counterparty**, and we assume **zero buyback** in
+sizing:
+- **Segment-liquidity watch.** Track realized sales volume + time-to-sell for the segments
+  we lend into. If a segment's liquidity falls below the [doc 21](21-liquidity-eligibility-proof-of-sale.md)
+  proof-of-sale gate (frequency/recency collapse), **halt new originations** there; existing
+  fixed-term loans ride to maturity and recover via resale/physical.
+- **Per-platform counterparty watch.** Monitor each issuer ([doc 20](20-tokenization-platforms-collateral-sources.md)):
+  custody-solvency signals, marketplace/redemption availability, admin-key or de-peg events
+  (per [doc 19.2](19-oq-closeout.md)). Degradation at one platform → **pause that lane**; other
+  lanes' caps unchanged. (No single custodian is a systemic dependency.)
+- **Absorb-capacity sizing.** Total exposure is capped (below) so that **even with zero issuer
+  buyback** — the realistic assumption — we can offload the whole book through marketplace +
+  burn-to-physical resale over a bear-market window **without breaching the reserve**. This is
+  the [doc 21](21-liquidity-eligibility-proof-of-sale.md) §21.5 absorb-capacity discipline applied
+  at the book level.
 
 ## 4.4 Concentration & exposure caps
 Sized so no single failure sinks the book (the bank-run defense). **Caps are enforced
