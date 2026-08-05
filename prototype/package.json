@@ -1,0 +1,15 @@
+{
+  "name": "magpie-collectibles-appraisal-prototype",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Read-only, back-testable appraisal-oracle prototype for the Magpie collectibles-lending strategy (doc 24). Off-chain, moves no funds, touches no chain. Zero runtime dependencies.",
+  "engines": { "node": ">=20" },
+  "scripts": {
+    "test": "node --test test/*.test.js",
+    "backtest": "node test/backtest.js",
+    "typecheck": "echo 'optional: npx -y typescript@5 tsc -p jsconfig.json --noEmit'"
+  },
+  "dependencies": {},
+  "devDependencies": {}
+}
