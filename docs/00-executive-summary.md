@@ -1,50 +1,63 @@
 # 0 · Executive Summary
 
 ## The opportunity
-Lend stablecoins/SOL against **tokenized graded Pokémon cards** (Collector Crypt
-NFTs, ~18k+ cards tokenized on Solana). Collectors unlock liquidity without
-selling and keep the upside; Magpie earns interest on over-collateralized loans
-with a built-in liquidation venue (Collector Crypt's on-chain buyback).
+Lend stablecoins/SOL against **tokenized, independently-authenticated, vaulted physical collectibles** —
+**graded Pokémon cards first**, sourced across *multiple* vetted platforms (Collector Crypt, Courtyard,
+Phygitals, …; [doc 20](20-tokenization-platforms-collateral-sources.md)), with adjacent proven-liquidity
+classes to follow (fine whisky via BAXUS). The token is only the on-chain custody/redemption handle; the
+collateral is the **real physical card and its realized-sale value.** Collectors unlock liquidity without
+selling and keep the upside; Magpie earns interest on conservative, over-collateralized loans.
 
-## Why it can work (the enabler)
-Collector Crypt already publishes a **standing on-chain buyback at ~85–90%** of an
-eBay/ALT-derived value, and runs a cheap native marketplace (2% seller fee). That
-gives us a fast liquidation rail — the missing piece for illiquid collateral.
+## The one rule that defines the product
+**We lend only against PROVEN-LIQUID items — things with real, recent, multi-venue *sales* — priced off
+what they actually SOLD for, never listings, never an issuer's self-assigned value, never an index
+projection ([doc 21](21-liquidity-eligibility-proof-of-sale.md)).** "Collateral that can still sell itself."
 
-## Why it's dangerous (and how we survive it)
-1. **Thin, manipulable markets.** Single sales can be shill-inflated. → Value off
-   *many* real sales, reject outliers, require a minimum comp count.
-2. **Cards crash 40–70%.** → Conservative tiered LTV + short duration + daily
-   mark-to-market + early liquidation trigger; survive on duration, not LTV alone.
-3. **Illiquid in a downturn (the BendDAO failure).** → Graduated liquidation to a
-   real clearing price, hard concentration caps, a reserve fund, small pilot size.
-4. **Fake/tampered slabs.** → Cert-level verification + vault attestation, PSA/CGC only.
-5. **Counterparty reliance on Collector Crypt's buyback.** → Treat it as a soft
-   floor we monitor and can survive losing; never as the valuation oracle.
+## Why it's hard — and how we survive it
+1. **Thin, manipulable markets.** → Value off *many* real sales; proof-of-sale gate; outlier/wash rejection;
+   ≥1 realized source independent of eBay (**keyed to the transaction corpus, not the brand** — [doc 22](22-realized-sales-venue-comp-data-map.md)).
+2. **Cards crash 40–70%.** → Conservative tiered LTV + **short fixed terms** + a real reserve; survive on
+   duration + liquidity, not LTV alone.
+3. **Illiquid in a downturn (the BendDAO failure).** → Graduated resale to a real clearing price, hard
+   concentration caps, a reserve fund, small pilot. Never a make-whole floor peg.
+4. **Fake/tampered slabs.** → Cert-level verification + vault attestation; PSA/CGC/BGS/SGC only.
+5. **No reliable liquidation *bid* (OQ-3).** The Collector Crypt "buyback" is Gacha-only/72h/off-chain — it
+   does **not** backstop a held card ([doc 19.2](19-oq-closeout.md)). → Recovery runs on **marketplace
+   resale + burn-to-physical resale**, sized assuming **zero buyback**; issuer buybacks are opportunistic only.
+6. **Single-platform counterparty risk.** → Source across **several vetted issuers, each a capped lane**;
+   no custodian is a systemic dependency.
 
 ## The policy in one screen
-- **Appraised Value (AV) = min( our haircut real-comp mark , the CC buyback quote )**,
-  accepted only if the two agree within ~25–30%.
-- **LTV on AV:** Tier A (blue-chip, dense fresh comps) ≤50% · Tier B (liquid) ≤40% ·
-  Tier C (thin/volatile) ≤25% or exclude · else **ineligible**.
-- **Eligibility gate:** ≥2 real sales in 12mo AND ≥1 in 6mo · PSA/CGC graded ·
-  cert verified · live buyback · above a $ floor · not tamper-flagged.
-- **Loans are short (30–90d), marked daily; a ~70% live-LTV breach triggers early liquidation.**
-- **Liquidation waterfall:** CC buyback → (circuit-breaker if paused/cut) → marketplace
-  graduated Dutch markdown → surplus to borrower, shortfall to reserve fund. **Never a make-whole floor peg.**
-- **Caps:** per-card ~2–5% of book · per-character cap · small total lane cap sized to
-  bear-market absorption · reserve buffer · withdrawal controls on the lender pool.
+- **Appraised Value (AV) = min( haircut *independent realized-comp* mark , issuer quote )** — accepted only
+  if they agree; **hard-refuse if the issuer/listing sits >15% above the independent mark** ("unfairly priced").
+- **Proof-of-sale gate (fail-closed):** ≥5 realized sales/12mo AND ≥2/90d · ≥3 sellers · ≥2 venues · ≥1
+  eBay-independent corpus · exact-identity {grader,grade,set,#,variant} · arm's-length · ≥ $250 floor.
+- **LTV on AV:** Tier A (L1 highly-liquid blue-chips) **≤50%** · Tier B **≤40%** · Tier C **≤25%** · else ineligible.
+- **Loans are short, fixed-term (30–90d), with NO mid-loan price-liquidation (v1).** Recover at maturity default.
+- **Liquidation waterfall:** opportunistic issuer buyback *if live* → **marketplace graduated markdown**
+  (reserve price, anti-snipe) → **burn-to-physical resale** → surplus to borrower, shortfall to the reserve.
+- **Caps + reserve:** per-card ≤ a fraction of its trailing realized volume · per-character · total-lane ·
+  per-platform · **reserve ~10–15% of book** (larger, because there's no buyback buffer and 50% is
+  reserve-covered at the tail).
 
-## Recommended v1: fixed-term, no price-liquidation ([doc 10](10-fixed-term-v1-spec.md))
-The spike found the live incumbents (Jupiter Offerbook, Collector Crypt) lend against physical
-cards with **fixed-term, oracle-less, no-price-liquidation** loans — a model that **removes most of
-the Critical/High attack surface by construction** (no live mark-to-market to manipulate → liquidate).
-That's the recommended launch. Mark-to-market (docs 2–5) becomes an optional later layer.
+## Structure & v1 (securities-aware)
+Launch as **P2P / offerbook** (users set terms — the safest securities posture; [doc 18](18-structure-decision-memo.md))
+with **1:1 whole-item redeemable NFTs** (non-securities per the 2026 SEC/CFTC line; avoid fractional), on the
+**fixed-term, no-price-liquidation** model ([doc 10](10-fixed-term-v1-spec.md)) — which removes most of the
+Critical/High oracle→liquidation attack surface by construction. Mark-to-market is an optional later layer.
+
+## The oracle (our moat)
+No platform hands a lender a safe on-chain price — that gap *is* the moat. We build a **cross-sourced,
+realized-comp appraisal** ([doc 24](24-oracle-prototype-spec.md)): **PSA Auction Prices Realized** (anchor)
++ **Fanatics/PWCC** (independent corroborator) + PokemonPriceTracker (eBay-derived cross-check only) → a
+conservative Appraised Value, back-tested against subsequent real sales and red-teamed against wash/shill/
+shared-source/index attacks **before** any capital.
 
 ## Status & gate to build
-Design-only. Per the [data spike](09-data-spike-results.md): OQ-2 (drawdowns) & OQ-5 (physical lien)
-✅ closed; OQ-1/OQ-3 🟡 partial; **OQ-4 downgraded 🔴→🟡** — PSA "Auction Prices Realized" (official
-API, multi-house, **eBay-independent**) resolves the F-1 independence requirement ([doc 12](12-data-sourcing.md)).
-Remaining before capital: confirm PSA API commercial terms, per-tier liquidity/CC-vault buyback
-terms, and sign off the [threat model](05-threat-model.md) with **no open Critical/High findings**.
-Economics work with the drawdown-justified LTV bands **A≤50 / B≤40 / C≤25** ([doc 13](13-economic-model.md)) + a **~10–15% reserve** — the top tier is reserve-covered at the tail since the buyback is not a backstop ([doc 19.2](19-oq-closeout.md)).
+**Design-only; nothing deployed.** Open questions: OQ-2 (drawdowns) & OQ-5 (physical lien) ✅; **OQ-4 🟡**
+(independence is achievable via a data license — [doc 22](22-realized-sales-venue-comp-data-map.md));
+**OQ-3 🔴** (buyback is not a liquidation rail → rebuilt on resale). **Next:** data-license outreach (PSA +
+Fanatics, [doc 23](23-outreach-briefs-psa-fanatics.md)) → read-only oracle prototype + back-test/red-team
+([doc 24](24-oracle-prototype-spec.md)) → structure/securities sign-off ([doc 18](18-structure-decision-memo.md)/[doc 14](14-legal-regulatory.md))
+→ audit + economic sim → tightly-capped pilot. No capital until the threat model + legal have **no open
+Critical/High items**.
