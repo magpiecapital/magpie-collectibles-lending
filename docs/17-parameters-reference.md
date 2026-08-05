@@ -33,8 +33,9 @@ not final*. Where a later doc tightened an earlier one, the tighter value wins (
 | Parameter | Launch value | Source |
 |---|---|---|
 | **LTV — Tier A** (blue-chip vintage, dense comps, L1 only) | **≤50%** (operator-set 2026-08-04; reserve-covered at the tail) | [doc 13.2](13-economic-model.md) |
-| **LTV — Tier B** (liquid graded) | **≤35%** (tightened from 40%) | doc 13.1 |
-| **LTV — Tier C** (thin/modern/reprint) | **≤20% or exclude** (tightened from 25%) | doc 13.1 |
+| **LTV — Tier B** (liquid graded, L2) | **≤40%** (operator-set 2026-08-04) | [doc 13.2](13-economic-model.md) |
+| **LTV — Tier C** (thin/modern/reprint, L3) | **≤25% or exclude** (operator-set 2026-08-04) | [doc 13.2](13-economic-model.md) |
+| **Liquidity boundary buffer** (anti tier-flip) | dispersion must be ≤ tier threshold × (1 − **0.15**) to grant the tier; borderline → conservative tier | T-17 / I-12 ([prototype](../prototype/README.md)) |
 | Loan duration | 30–90 days, fixed | [doc 10.4](10-fixed-term-v1-spec.md) |
 | Interest (APR) | ~10–14%, tiered, no origination fee | doc 13.4 |
 | Maintenance/liquidation trigger (MtM layer only) | ~70% live LTV, independent-comp mark | doc 3.4 (I-1/F-4) |

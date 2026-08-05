@@ -14,11 +14,15 @@ import PARAMS from '../params.js';
  */
 export function classifyLiquidity(survivors, lastSaleAgeDays, dispersion) {
   const sales12mo = survivors.length;
+  const buffer = PARAMS.LIQUIDITY_BOUNDARY_BUFFER_FRAC;
   for (const t of PARAMS.liquidityTiers) {
+    // Boundary buffer on dispersion (T-17 / I-12): must clear the threshold by a margin,
+    // so a borderline card falls to the more-conservative tier and a marginal manipulation
+    // of the (manipulable) non-independent corpus cannot step the LTV up.
     if (
       sales12mo >= t.minSales12mo &&
       lastSaleAgeDays <= t.maxLastSaleDays &&
-      dispersion <= t.maxDispersion
+      dispersion <= t.maxDispersion * (1 - buffer)
     ) {
       return { tier: /** @type {'L1'|'L2'|'L3'} */ (t.tier), sales12mo };
     }

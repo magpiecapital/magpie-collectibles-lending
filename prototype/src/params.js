@@ -42,6 +42,12 @@ const PARAMS = {
     { tier: 'L3', minSales12mo: 4, maxLastSaleDays: 90, maxDispersion: 0.4 },
   ],
 
+  // Anti tier-flip boundary buffer (T-17 / I-12): a card must clear a tier's DISPERSION
+  // threshold by this margin to be granted the tier, so a borderline card defaults to the
+  // more-conservative tier and a marginal manipulation of the non-independent corpus can't
+  // step the LTV. (Full elimination of the step needs production hysteresis / continuous LTV.)
+  LIQUIDITY_BOUNDARY_BUFFER_FRAC: 0.15,
+
   // ── Staleness / confidence haircut (doc 21 §21.4) ──
   // Applied to the mark by recency of the most recent qualifying sale.
   // haircutBps is basis points removed from value. confidence is the 1..5 meter.

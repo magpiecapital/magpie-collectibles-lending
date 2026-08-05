@@ -51,10 +51,14 @@ Tier → LTV is discrete (L1 50% / L2 40% / L3 25%). A card sitting **exactly on
 **loan** by the LTV gap. The appraised *value* stays anchored (P6 holds) — this is not a
 value-tracking flaw — but it is a **boundary-manipulation surface**: an actor able to nudge the
 non-independent (eBay) corpus a couple percent could flip a borderline card up a tier.
-**Mitigation for a production build (TODO, not in this prototype):** add **hysteresis / a boundary
-buffer** — require the tighter classification to hold by a margin (and/or across a re-check window)
-before granting the higher tier, so a marginal, manipulable input can't step the LTV. Tracked as a
-threat-model item; the pure stateless prototype documents it rather than hides it.
+**Mitigation — a boundary buffer is now IMPLEMENTED** (`LIQUIDITY_BOUNDARY_BUFFER_FRAC`, default 0.15):
+a card must clear a tier's dispersion threshold **by a margin** to be granted the tier, so a borderline
+card defaults to the more-conservative tier and a marginal manipulation of the non-independent corpus
+can't step the LTV up. This raises the bar but does not fully remove the step; **full elimination**
+needs production **hysteresis** (the higher tier must persist across a re-check window) and/or a
+**continuous** LTV function of the liquidity metrics. Tracked as threat **T-17 / invariant I-12** in
+[docs/05](../docs/05-threat-model.md). The prototype documents *and* partially fixes it, rather than
+hiding it.
 
 ## Run
 ```
