@@ -2,9 +2,10 @@
 
 **Status: DESIGN ONLY — not built, not deployed. This repository is the complete
 strategy, underwriting policy, valuation-oracle spec, liquidation design, and
-threat model for lending against tokenized graded Pokémon cards (e.g. Collector
-Crypt NFTs). Nothing here touches mainnet until every open question is closed and
-the threat model is signed off.**
+threat model for lending against **tokenized, authenticated, vaulted physical
+collectibles — graded Pokémon cards first, sourced across multiple vetted platforms
+(Collector Crypt, Courtyard, Phygitals…)**. Nothing here touches mainnet until every
+open question is closed and the threat model is signed off.**
 
 Magpie's invariant is **"collateral that can still sell itself."** This document set
 exists to prove — before a line of on-chain code — that a card-backed loan can be
@@ -45,6 +46,13 @@ physical card*, nothing more.
 | 15 | [Collector UX & go-to-market](docs/15-collector-ux-gtm.md) | The borrow flow, trust design, channels — and why the same hype that sells loans inflates collateral |
 | 16 | [Build & pilot plan](docs/16-build-plan.md) | Gated Phase 0→pilot execution sequence and graduation criteria |
 | 17 | [Parameters reference](docs/17-parameters-reference.md) | Single source of truth for every tunable + the invariant index |
+| 18 | [**Structure decision memo**](docs/18-structure-decision-memo.md) | **P2P/offerbook vs curated pool** — the securities-gated Phase-0 call (recommend P2P) |
+| 19 | [OQ-3 / OQ-4 closeout](docs/19-oq-closeout.md) | Research verdicts: buyback is NOT a liquidation rail (🔴); data-independence is licensable (🟡) |
+| 20 | [Tokenization platforms](docs/20-tokenization-platforms-collateral-sources.md) | Collateral-source diversification — Courtyard, Phygitals, BAXUS…; each a capped lane |
+| 21 | [**Liquidity & proof-of-sale gate**](docs/21-liquidity-eligibility-proof-of-sale.md) | **The collateral-admission gate** — proven-liquid only, never unfairly-priced |
+| 22 | [Realized-sales venue & comp map](docs/22-realized-sales-venue-comp-data-map.md) | Where it actually sells + how to pull SOLD comps; independence is by *corpus* |
+| 23 | [Outreach briefs — PSA & Fanatics](docs/23-outreach-briefs-psa-fanatics.md) | Ready-to-send data-license/partnership packages |
+| 24 | [**Oracle prototype spec**](docs/24-oracle-prototype-spec.md) | **The read-only, back-testable appraisal engine** (Phase-2) |
 
 ## First principles (non-negotiable)
 
@@ -53,7 +61,7 @@ physical card*, nothing more.
 3. **Permissionless ≠ liberal.** The *data-quality gate* decides eligibility, not a human whitelist. Cards without enough real comps are simply not borrowable (fail-closed).
 4. **Size for the bear, not the boom.** LTV, caps, and reserves assume a downturn with no bidders. BendDAO died assuming otherwise.
 5. **Never hard-peg liquidation to "make the protocol whole."** Allow graduated markdown to a real clearing price, or you sell nothing and take a total loss.
-6. **The Collector Crypt buyback is a *soft floor*, not our oracle.** It's a useful, cheap exit we do not control; we cross-check it, monitor it, and can survive it disappearing.
+6. **No issuer buyback is a reliable liquidation rail (OQ-3).** Collector Crypt's is Gacha-only/72h/off-chain; recovery runs on marketplace + physical resale sized for *zero* buyback. Collateral is sourced across multiple **capped platform lanes** — no single custodian is a systemic dependency.
 
 ## Provenance
 
