@@ -54,6 +54,7 @@ physical card*, nothing more.
 | 23 | [Outreach briefs — PSA & Fanatics](docs/23-outreach-briefs-psa-fanatics.md) | Ready-to-send data-license/partnership packages |
 | 24 | [**Oracle prototype spec**](docs/24-oracle-prototype-spec.md) | **The read-only, back-testable appraisal engine** (Phase-2) |
 | 25 | [Outreach briefs — whisky (BAXUS)](docs/25-outreach-briefs-whisky-baxus.md) | BAXUS + Whiskystats + Rare Whisky 101 packages for the whisky class |
+| 26 | [**Launch allowlist**](docs/26-launch-allowlist.md) | **The approved-collateral list** — vetting standard, the Tier-A pilot set, exclusions, caps |
 
 The `prototype/` directory holds the **runnable, red-teamed** reference implementation of doc 24 (`cd prototype && npm test`).
 
