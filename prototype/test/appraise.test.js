@@ -5,6 +5,7 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { appraise } from '../src/pipeline/appraise.js';
+import { classifyLiquidity } from '../src/pipeline/liquidity.js';
 import { makeMockSource, sale, daysAgo } from '../src/sources/mockSource.js';
 import { NOW, VALID_CARD, liquidBlueChipSources } from './helpers.js';
 
@@ -98,6 +99,14 @@ test('liquidity: wide price dispersion → below L3 → ineligible', () => {
   const a = appraise(VALID_CARD, null, s, NOW);
   assert.equal(a.eligible, false);
   assert.ok(a.reasonCodes.includes('liquidity_below_L3'));
+});
+
+test('boundary buffer (T-17/I-12): dispersion inside the raw L1 threshold falls to the conservative tier', () => {
+  const dummy = /** @type {any} */ (Array.from({ length: 15 }, () => ({})));
+  // L1 raw threshold 0.20 → buffered 0.17. 0.18 is inside the raw threshold but past the
+  // buffer → must NOT be granted L1 (falls to L2). 0.15 clears the buffer → L1.
+  assert.equal(classifyLiquidity(dummy, 5, 0.18).tier, 'L2');
+  assert.equal(classifyLiquidity(dummy, 5, 0.15).tier, 'L1');
 });
 
 test('issuer quote BELOW the mark → AV = min(mark, issuer)', () => {

@@ -178,6 +178,19 @@ floorless Dutch fallback (which runs precisely when the buyback floor is absent)
 liquidation; the Dutch fallback gets a **non-make-whole reserve price** tied to the
 independent comp (compatible with I-5) plus anti-snipe (commit-reveal).
 
+## T-17 · Tier-boundary manipulation (found by prototype property-fuzzing, 2026-08-05)
+**Attacker:** a card sitting *exactly* on a liquidity-tier boundary (e.g. the L1/L2 dispersion
+threshold) is flipped up a tier by a **small (~2%) nudge to the manipulable non-independent (eBay)
+corpus** — stepping the LTV, and thus the borrowable loan, by the tier gap (40%↔50%). The appraised
+*value* stays anchored to the independent cluster (this is **not** a value-tracking flaw); the surface
+is the **discrete tier→LTV step function**.
+**Defenses:** a **liquidity boundary buffer** — a borderline card must clear the tighter tier's
+thresholds **by a margin**, so borderline cards default to the *conservative* tier and a marginal
+manipulation can't step the LTV (implemented in the [prototype](../prototype/README.md)). For
+production: **hysteresis** (the higher tier must persist across a re-check window before it grants a
+higher LTV) and/or making LTV a **continuous** function of the liquidity metrics to remove the step
+entirely. New **I-12**. *(surfaced by fuzzing the appraisal engine — the value of red-teaming in code.)*
+
 ---
 
 ## Security invariants (must always hold)
@@ -192,6 +205,7 @@ independent comp (compatible with I-5) plus anti-snipe (commit-reveal).
 - **I-9 (new)** `reserve ≥ modeled worst-case aggregate shortfall(book)`, recomputed continuously; originations auto-halt on degradation; reserve exhaustion = halt + orderly wind-down, **never** silent socialized loss. *(F-7)*
 - **I-10 (new)** The category index is itself manipulation-monitored and cross-checked against a second independent index; pure index drift has a **capped** contribution to any card's borrowing power. *(F-2)*
 - **I-11 (new)** Any **increase** in borrowing power requires fresh, **card-specific, multi-seller** comp support (never index drift or a single print alone) and is bounded **per-day and cumulatively** over a trailing window. *(F-2, F-8, F-9)*
+- **I-12 (new)** Tier→LTV must not be flippable by a marginal, manipulable-corpus input: a borderline card must clear each liquidity tier by a **boundary buffer** (defaults to the conservative tier), with production **hysteresis / continuous LTV** to remove the step. *(T-17, prototype fuzz finding)*
 
 ## Pre-mainnet security checklist
 - [ ] Third-party smart-contract audit (NFT vault, borrow/repay/liquidate, oracle interface).
