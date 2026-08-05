@@ -34,6 +34,28 @@ Additional guarantees: **fail-closed** (any uncertainty → ineligible + a reaso
 (no wall-clock or randomness inside the logic — `now` is injected), and **zero dependencies** (no
 supply-chain attack surface — runs on Node's standard library alone).
 
+## Property-based fuzzing (`test/fuzz.test.js`)
+Beyond the fixed red-team fixtures, a seeded (reproducible) fuzzer asserts the security
+invariants across thousands of randomized + hostile inputs:
+- **P1 total/robust** — for ANY input (garbage identity, adversarial records, throwing sources,
+  junk `now`), `appraise` returns a well-formed result and **never throws** (5,000 cases).
+- **P2 fail-closed** — ineligible ⇒ value + loan are null.
+- **P3 bounds** — eligible ⇒ integer AV ≥ floor, 0 ≤ maxLoan ≤ AV, tier ∈ {L1,L2,L3}.
+- **P4 determinism** — `appraise(x)` deep-equals `appraise(x)`.
+- **P5 wash-invariance** — same-seller/same-price wash sales at any price never move AV.
+- **P6 anchoring** — inflating ONLY the eBay corpus never drags the value toward the pump.
+
+## Known limitation (found by the fuzzer): tier boundaries are a step function
+Tier → LTV is discrete (L1 50% / L2 40% / L3 25%). A card sitting **exactly on a tier boundary**
+(e.g. the L1/L2 dispersion threshold) can flip tiers on a tiny input change, stepping the max
+**loan** by the LTV gap. The appraised *value* stays anchored (P6 holds) — this is not a
+value-tracking flaw — but it is a **boundary-manipulation surface**: an actor able to nudge the
+non-independent (eBay) corpus a couple percent could flip a borderline card up a tier.
+**Mitigation for a production build (TODO, not in this prototype):** add **hysteresis / a boundary
+buffer** — require the tighter classification to hold by a margin (and/or across a re-check window)
+before granting the higher tier, so a marginal, manipulable input can't step the LTV. Tracked as a
+threat-model item; the pure stateless prototype documents it rather than hides it.
+
 ## Run
 ```
 cd prototype
