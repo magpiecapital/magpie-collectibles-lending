@@ -24,19 +24,18 @@ actually *sell* for, across every platform that vaults them.** The third head of
 **Numbers that must match everywhere** (site, docs, prototype, tweets): LTV tiers **≤50 / ≤40 / ≤25**;
 three collateral classes; *in design*, not live. Any surface showing a different number is a bug, not a variant.
 
-## 31.3 Tweet — in-design teaser (SAFE TO POST NOW)
-> The third head of the monster is coming.
+## 31.3 Tweet — in-design teaser (SAFE TO POST NOW) — LOCKED COPY
+The operator selected the simplified, high-level version (2026-08-06). **This is the copy to post** from
+@MagpieLoans; the magpie.capital/collectibles link auto-loads the branded OG card as the preview:
+> Memecoins. Tokenized stocks. And now — collectibles.
 >
-> Memecoins. Tokenized stocks. And now — **collectibles.**
+> Borrow against your graded cards without selling them.
 >
-> Borrow against your graded cards, priced on what they actually *sold* for, not a hopeful listing. Only
-> the proven-liquid ones. Fixed-term, so they're never dumped on a wick.
->
-> In design, in the open 👇
+> In design 👇
 > magpie.capital/collectibles
 
-*Why it's safe:* every claim is present-tense true (the design exists and is public); "coming" + "in
-design" are stated, so it never implies a live product.
+*Why it's safe:* high-level and present-tense true; "in design" is stated, so it never implies a live
+product. No unpublished numbers, no names, no over-claim. (Earlier wordier draft retired — keep it short.)
 
 ## 31.4 Tweet — launch announcement (HOLD until the pool is LIVE)
 > Collateral that can still sell itself — now for collectibles.
