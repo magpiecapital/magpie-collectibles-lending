@@ -58,6 +58,7 @@ physical card*, nothing more.
 | 27 | [**Sold-comp verification runbook**](docs/27-sold-comp-verification-runbook.md) | **The per-item due-diligence** — prove what EXACTLY sells across every marketplace before any loan |
 | 28 | [Addressable collateral universe](docs/28-addressable-collateral-universe.md) | Every tokenized RWA ranked by what's safely underwritable — cards ready, whiskey next, the rest watch-list |
 | 29 | [**The winning wedge**](docs/29-winning-wedge-best-permissionless-provider.md) | **How we become #1** — the competitive landscape, the gaps, and the cross-sourced-oracle moat |
+| 30 | [**The aggregated collateral model**](docs/30-aggregated-collateral-model.md) | **The positioning** — one liquidity layer across every platform's already-tokenized inventory, aggregated |
 
 The `prototype/` directory holds the **runnable, red-teamed** reference implementation of doc 24 (`cd prototype && npm test`).
 
