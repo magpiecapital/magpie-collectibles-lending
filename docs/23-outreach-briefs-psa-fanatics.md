@@ -1,10 +1,11 @@
 # 23 · Phase-1 Outreach Briefs — PSA (APR) & Fanatics Collect (PWCC)
 
-> Ready-to-adapt outreach for the two data relationships that unlock the **independent, cert-native
+> **Send-ready** outreach for the two data relationships that unlock the **independent, cert-native
 > realized-sales oracle** ([doc 22](22-realized-sales-venue-comp-data-map.md)): a **PSA / Collectors
 > Universe** license for *Auction Prices Realized (APR)*, and a **Fanatics Collect (PWCC)** sales-history
-> data partnership. Both are commercial/licensing conversations, not self-serve APIs. Personalize the
-> sender/contact before sending. Design-stage — we're scoping terms, not committing volume yet.
+> data partnership. Both cover notes below are complete, copy-paste prose — the **only** thing to fill is
+> the signature (§23.0.1). Both are commercial/licensing conversations, not self-serve APIs. Design-stage:
+> we're scoping terms, not committing volume yet — say so, and never over-promise.
 
 ## 23.0 Shared framing (use in both)
 - **Who we are:** Magpie ([magpie.capital](https://magpie.capital)) — a Solana lending protocol. We're
@@ -17,7 +18,49 @@
   display a **derived appraised value** to a borrower (a single valuation number + eligibility), and use
   it internally for underwriting. We do **not** intend to **republish or resell your raw comp tables** or
   rebuild a competing public price guide. We'll attribute the source and honor caps.
+- **Credibility hook (use in both):** our **full design, valuation methodology, and threat model are
+  public** — [github.com/magpiecapital/magpie-collectibles-lending](https://github.com/magpiecapital/magpie-collectibles-lending),
+  overview at [magpie.capital/collectibles](https://magpie.capital/collectibles). A data partner can see
+  *exactly* how the feed would be used before signing anything. Transparency is the pitch.
 - **Tone:** concise, specific, no over-promising. We're asking for a scoping call + terms, not pitching hype.
+
+## 23.0.1 Send-ready pack — do this before hitting send
+**Who to send to** *(confirm the current route on their site — do NOT invent an address):*
+- **PSA / Collectors:** there's no published data-licensing inbox — open via the **business/API inquiry
+  form on psacard.com**, or a warm **LinkedIn intro to PSA/Collectors business-development / data-licensing**.
+  The APR commercial tier is a BD conversation, not self-serve.
+- **Fanatics Collect / PWCC:** route through **Fanatics Collect partnerships/support (collect.fanatics.com)**,
+  or a **LinkedIn intro to Fanatics Collect BD / former PWCC data leads.**
+
+**From address:** send from a **Magpie-domain address** (e.g. `partnerships@magpie.capital`), never a
+personal one — brand consistency + deliverability.
+
+**Signature block** *(fill in before sending — use a Magpie identity, never a personal/third-party one):*
+```
+— [Your name]
+[Title], Magpie
+[you@magpie.capital] · magpie.capital/collectibles
+github.com/magpiecapital/magpie-collectibles-lending
+```
+
+**Attach / link:** the public design repo + the /collectibles overview (credibility). Nothing confidential.
+
+**Pre-send checklist:**
+- [ ] Correct recipient/route confirmed on their live site (not a guessed address)
+- [ ] Subject is specific (not "partnership opportunity")
+- [ ] No over-promising, **no volume/revenue commitment** — we're scoping terms
+- [ ] "**Derived value only, never resell raw comps**" stated plainly
+- [ ] Links resolve; signature filled with a **Magpie** identity
+- [ ] Counsel CC'd if you want legal engaged from the first call
+
+**Follow-up** *(send ~5–7 business days later if no reply):*
+> **Subject:** Re: [original subject]
+>
+> Hi — floating this back to the top of your inbox. Happy to keep it to a 20-minute call to see whether a
+> data license is a fit; our full design is public if it's easier to skim async first. Either way, thanks
+> for taking a look.
+>
+> [signature]
 
 ---
 
@@ -26,25 +69,34 @@
 **Goal:** license **APR** as our **primary independent realized-sales anchor** — it's multi-venue (eBay +
 Heritage + Goldin + Memory Lane) and native to {grader, grade, cert}, the de-facto graded standard.
 
-### Cover note (template)
-> Subject: Data-license inquiry — PSA Auction Prices Realized (APR) for a collateral-valuation use case
+### Cover note (send-ready — fill only the signature)
+> **Subject:** Data-license inquiry — licensing PSA Auction Prices Realized (APR) for card-collateral valuation
 >
-> Hi [PSA data-licensing / business-development team],
+> Hello,
 >
-> I'm reaching out from **Magpie** (magpie.capital), a Solana-based lending platform. We're building a
-> product that lets collectors borrow against **tokenized, PSA-graded cards** without selling them, and
-> our underwriting values each card **strictly off realized sales, not listings.**
+> I'm reaching out from **Magpie** ([magpie.capital](https://magpie.capital)), a Solana-based lending
+> platform. We're building a product that lets collectors borrow against their **PSA-graded, vault-held
+> cards without selling them** — and our underwriting values each card **strictly off realized sales,
+> never listings.**
 >
-> PSA's **Auction Prices Realized** is the authoritative, cert-and-grade-keyed record of what cards
-> actually sell for, and we'd like to license it as a data feed rather than rely on scraping. We would
-> use it to compute a **derived appraised value** shown to the borrower and used internally for
-> eligibility/underwriting — **not** to republish or resell your raw APR data or build a competing price
-> guide.
+> That makes PSA **Auction Prices Realized** the single most important data source for us: it's the
+> authoritative, cert- and grade-keyed record of what cards actually sell for. We'd like to **license it
+> as a proper data feed** rather than scrape it, and use it to compute a **derived appraised value** shown
+> to a borrower and used internally for eligibility. To be clear up front: we would **not** republish or
+> resell your raw APR tables, or build a competing public price guide — we'd surface only a single derived
+> valuation, with attribution to PSA.
 >
-> Could we set up a short call to understand your **commercial data-license options, access method,
-> pricing, and redistribution terms**? A short spec of exactly what we'd consume is below.
+> So you can see exactly how the data would be used before any agreement, our full underwriting design,
+> valuation methodology, and threat model are public
+> (github.com/magpiecapital/magpie-collectibles-lending), with a product overview at
+> magpie.capital/collectibles.
 >
-> Thanks, [name / role] · [contact] · magpie.capital
+> Could we set up a short call to understand your commercial data-license options — access method,
+> pricing, and redistribution/display terms? A precise spec of exactly what we'd consume is below.
+>
+> Thanks very much,
+>
+> — [signature]
 
 ### Data we'd consume (spec)
 Per realized sale, keyed to exact identity:
@@ -77,24 +129,33 @@ rate/volume caps; sign a DPA/redistribution addendum as needed.
 cert-level (grade + sub-grades + cert) **independent, non-eBay** realized source — as our **corroborating
 independent leg** (satisfies the "≥1 realized source structurally independent of eBay" rule, [doc 22.2](22-realized-sales-venue-comp-data-map.md)).
 
-### Cover note (template)
-> Subject: Data partnership inquiry — Fanatics Collect / PWCC realized sales-history
+### Cover note (send-ready — fill only the signature)
+> **Subject:** Data partnership inquiry — licensing Fanatics Collect / PWCC realized sales-history
 >
-> Hi [Fanatics Collect / PWCC data-partnerships team],
+> Hello,
 >
-> I'm from **Magpie** (magpie.capital), a Solana lending platform building a way for collectors to borrow
-> against **tokenized, graded cards** without selling. Our underwriting values cards **only off realized
-> sales**, and Fanatics Collect / PWCC is one of the few **independent, high-integrity auction venues**
-> with cert-level sold data — which makes it exactly the corroborating source we want alongside a licensed
-> primary feed.
+> I'm reaching out from **Magpie** ([magpie.capital](https://magpie.capital)), a Solana-based lending
+> platform. We're building a way for collectors to borrow against their **tokenized, graded cards without
+> selling them**, and our underwriting values every card **only off realized sales.**
 >
-> We'd like to consume your **realized sales-history** (hammer/sale price + date, keyed to grade + cert)
-> via a **licensed feed or data-sharing agreement**, to compute a derived appraised value for underwriting
-> — **not** to republish your raw results. Could we scope your **data-partnership options, access, pricing,
-> and redistribution terms** on a short call?
+> Fanatics Collect — with PWCC's auction history — is one of the very few **high-integrity, non-eBay
+> venues** with cert-level sold data, which makes it exactly the **independent corroborating source** we
+> want alongside a licensed primary feed. We'd like to **license your realized sales-history** (final /
+> hammer price + date, keyed to grade and cert) via a data feed or data-sharing agreement, and use it to
+> compute a **derived appraised value** for underwriting — **not** to republish your raw results.
 >
-> Separately, we work with tokenization/custody platforms in this space and are happy to explore a broader
-> relationship. Spec of what we'd consume below. Thanks — [name/role] · [contact] · magpie.capital
+> Two things that may be relevant: (1) our full design and methodology are **public**
+> (github.com/magpiecapital/magpie-collectibles-lending; overview at magpie.capital/collectibles), so you
+> can see precisely how the data is used; and (2) because Fanatics Collect also sits on the
+> tokenization/custody side of this market, we'd be glad to explore a **two-sided relationship** — a data
+> feed *and* Fanatics-vaulted cards as a vetted collateral source on Magpie.
+>
+> Could we scope your data-partnership options — access, pricing, and redistribution terms — on a short
+> call? A precise spec of what we'd consume is below.
+>
+> Thanks very much,
+>
+> — [signature]
 
 ### Data we'd consume (spec)
 Per realized auction/marketplace sale:
