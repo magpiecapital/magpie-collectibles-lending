@@ -48,6 +48,27 @@ Japanese equivalents and modern chase are **staged for later** (§26.4), not lau
 > card are two different collateral items, keyed and appraised separately. Below grade 8 → **excluded at
 > launch** (comps too thin/volatile).
 
+### Ready-now expansion — graded SPORTS cards (same V-1..V-7 standard)
+Per [doc 28](28-addressable-collateral-universe.md), graded **sports cards** are the immediate #2 class:
+realized-sales data is *equal or deeper* than Pokémon (PSA APR + Fanatics/Goldin auction results), and
+sports is ~54% of the graded-card market. Verified in [doc 27.7](27-sold-comp-verification-runbook.md): a
+**1986 Fleer Jordan #57 PSA 9** was the single strongest-liquidity card tested — dozens of realized sales/yr
+across 6 venues with real eBay-independent auction comps. Iconic, densely-comped rookies first.
+
+| # | Card | Year / set | Grades | Tier | Note |
+|---|---|---|---|---|---|
+| S-1 | **Michael Jordan #57 (RC)** | 1986 Fleer | 8–10 | A/B by grade | Benchmark modern RC; deepest multi-venue comps ([doc 27.7](27-sold-comp-verification-runbook.md)) |
+| S-2 | **LeBron James #111 (RC)** | 2003-04 Topps Chrome | 9–10 | A/B | Iconic, densely-comped modern RC |
+| S-3 | Other iconic densely-comped RCs (Brady, Trout, Kobe…) | — | 8–10 | B | Added only on demonstrated liquidity per the gate |
+
+Independent realized-price venue for this class = **Fanatics Collect / Goldin** (deep, non-eBay).
+
+> **Variant discipline — CRITICAL (a 10–50× value lever):** for vintage Pokémon the *printing* — **Unlimited
+> < Shadowless < 1st Edition** — changes value by **10–50×** ([doc 27.7](27-sold-comp-verification-runbook.md):
+> a 1st-Ed PSA 10 Charizard = $550k; the same-numbered *Unlimited* PSA 10 ≈ $15–29k). **Each variant is a
+> SEPARATE collateral item**, keyed and appraised independently — the exact printing is read off the PSA
+> cert before any loan. **Never** mark an Unlimited card off a 1st-Edition headline.
+
 ## 26.3 Explicitly EXCLUDED at launch (this is the close-vetting part)
 | Excluded | Why |
 |---|---|

@@ -75,8 +75,39 @@ comps only briefly; never lend on stale proof. If a segment's realized volume co
 originations in that segment (circuit-breaker, [doc 4](04-liquidation-risk.md)).
 
 ## 27.7 Worked examples — the method on real cards (2026-08-06)
-*(Filled from live cross-marketplace research — demonstrating PASS on the flagships and a deliberate
-FAIL on an illiquid control, so the bar is concrete, not theoretical.)*
+We ran the §27.3 procedure against real cross-marketplace data on the flagships + a deliberate reject
+control. **Two hard lessons came out first:**
+
+**Lesson 1 — the exact PRINTING is the biggest value lever, and it's on the cert.** "Base Set Charizard
+#4/102" spans **Unlimited < Shadowless < 1st Edition**, differing by **10–50×** — a *1st-Ed* PSA 10
+Charizard sold for **$550,000** (Heritage, Dec 2025), while an *Unlimited* PSA 10 is ~$15k–$29k. The
+six-figure headlines are 1st Edition and must **never** mark an Unlimited card. → Step 1 must read the
+exact variant off the PSA cert; **each variant is a separate collateral item, keyed and capped separately**
+(reinforces [doc 21](21-liquidity-eligibility-proof-of-sale.md) PS-5 / I-4).
+
+**Lesson 2 — the authoritative sold feeds can't be scraped; licensed access is mandatory.** Every primary
+transactional source (eBay sold, PSA APR, 130point, Card Ladder, Heritage/Goldin/Fanatics lot pages)
+blocks automated fetch (403). Public aggregators confirm the cards *trade* and roughly where — but **exact
+dated per-sale ledgers + 90-day counts + distinct-seller counts require the licensed pull** (PSA APR +
+Card Ladder + eBay Marketplace Insights — the [doc 23](23-outreach-briefs-psa-fanatics.md) outreach). So
+**public data confirms LIQUIDITY; a lendable MARK needs the licensed feeds.** This is the concrete reason
+the data-license outreach is the critical unblock — you cannot honestly mark a card without it.
+
+**Results** (all Pokémon figures = the *Unlimited* base case):
+| Card (grade) | Realized range | Trades? | eBay-independent comp? | Verdict |
+|---|---|---|---|---|
+| Charizard #4 · PSA 10 | ~$15k–$29k (aggregators ~2× apart) | Yes, frequent | Gap (for Unlimited) | **CONDITIONAL** — liquid, mark unresolved |
+| Blastoise #2 · PSA 9 | ~$840–$1,000 | Yes, ~monthly+ | Inferred | **PASS** |
+| Venusaur #15 · PSA 9 | ~$375–$686 | Yes, ~monthly+ | Inferred | **PASS** |
+| **1986 Fleer Jordan #57 · PSA 9** | ~$17.5k–$30k (clears ~$20–22k) | **Dozens/yr, 6 venues** | **YES (PWCC / SCP / Goldin / Heritage)** | **PASS — strongest** |
+| Venusaur #15 · PSA 10 | ~$1.4k–$3.7k (conflicting) | Thinner (585 pop) | Inferred | **FAIL as-is** — marks conflict |
+| **REJECT CONTROL:** Panini Prizm EPL, Benteke "Gold Power" /5 · PSA 10 | none — only an active *ask* | **No realized sale anywhere** | No | **FAIL by design** |
+
+**Takeaways:**
+1. **The blue-chips ARE liquid** — the gate PASSES the two Pokémon PSA 9s + the Jordan PSA 9 at conservative rates.
+2. **The higher grades are HELD** (Charizard / Venusaur PSA 10) until the licensed pull resolves the mark — the gate correctly **refuses to lend on an unresolved number rather than guess.**
+3. **The reject control works** — a /5 non-star with zero realized sales (ask-only, no independent comp) is cleanly **REJECTED**: exactly the "priced-high-but-never-sells" asset the mandate excludes.
+4. **The Jordan is the single strongest-liquidity card tested** — confirming graded **sports cards** as a first-class liquid class ([doc 28](28-addressable-collateral-universe.md)).
 
 ## 27.8 Ties
 Operationalizes [doc 21](21-liquidity-eligibility-proof-of-sale.md) (the gate) using [doc 22](22-realized-sales-venue-comp-data-map.md)
