@@ -1,67 +1,106 @@
 # 29 · The Winning Wedge — becoming the #1 permissionless liquidity provider
 
 > Operator (2026-08-06): *"be the best permissionless liquidity provider for these assets… and the
-> tokenized RWAs that platforms like Collector Crypt vault."* This is the competitive thesis: who else
-> lends against these assets, where they fall short, and the exact wedge where a safety-first,
-> cross-sourced-oracle, permissionless lender wins. Synthesizes the competitive research + [doc 11](11-competitive-landscape.md)
-> + [doc 28](28-addressable-collateral-universe.md). *(Benchmarks refined as the full teardown lands.)*
+> tokenized RWAs that platforms like Collector Crypt vault."* Full competitive teardown (research
+> 2026-07-30 → 08-06): who lends against these assets, where they die, and the exact lane that's open.
+> **[v]** = verified/primary · **[s]** = secondary/press · **[t]** = a team's stated target for an
+> unshipped product ("no published LTV/rate" is itself the finding — it's the norm here).
 
-## 29.1 The one-line thesis
-**Widest *SAFE* breadth wins — not widest breadth, not highest LTV.** The single thing no incumbent has is
-a **trustworthy, cross-sourced, realized-price oracle** — everyone prices off one source or a vendor's own
-number. That gap is the moat. We become #1 by lending across the widest set of **proven-liquid** tokenized
-RWAs, priced off **cross-sourced real sales**, screened **fail-closed** — deeper *and* safer than anyone.
+## 29.1 The one-line read
+**The category is a graveyard of the right idea executed with the wrong risk engine.** Every serious
+attempt has either **(a) never shipped lending because it can't price the asset** (Collector Crypt,
+LendVault), **(b) shipped and got drained through a single-source oracle** (Loopscale −$5.8M, BendDAO
+near-insolvency), or **(c) shed the risk onto the individual lender and stopped scaling** (every P2P book).
+**Nobody owns a trustworthy, cross-sourced, realized-price oracle *plus* a working liquidation rail for
+illiquid collateral. That is the open lane** — and it's exactly what Magpie is built to be.
 
-## 29.2 The competitive landscape (who lends against these assets)
-| Player | Assets | Model | Price source | LTV / rate (approx) | Key weakness |
-|---|---|---|---|---|---|
-| **Collector Crypt (native)** | Its vaulted cards | Fixed-term, on-chain | **Single/custom** (own index + buyback) | ~7–8% APR | Single-vendor price + custody; you lend on *their* number |
-| **Loopscale "Collectibles Vault"** | CC vaulted cards | Pooled/order-book | **Custom/undisclosed** card oracle | up to ~80% (stables side) | Undisclosed single oracle = the drain vector |
-| **Jupiter Offerbook** | CC slabs | **P2P, fixed-term, no oracle** | none (lenders set terms) | lender-set | No pricing help; thin/manual; capital-inefficient |
-| **NFTfi** | NFTs (blue-chips) | P2P, fixed-term, no oracle | none | lender-set | **Winding down Aug 2026** (market −97%); no-oracle capped growth |
-| **Arcade / Gondi / Blend** | NFTs | P2P / perpetual / pooled | floor oracle or none | varies | NFT-floor fragility; BendDAO-class cascade risk |
-| **BAXUS / Bridgesplit** | Whiskey/spirits | On-chain lending | BAXUS's own feed | ~12–15% APR | Single-source price; one asset class |
-| **TradFi card lenders** (Qollateral, Borro…) | Physical cards | Off-chain secured | manual appraisal | **40–60% LTV, 13–15%+** | Gated, slow, custodial, recourse, KYC — not permissionless |
+**Positioning:** *the only lender that is permissionless, cheap, fast, AND safe on tokenized collectibles —
+because it prices collateral off proven realized liquidity, not listings or a single feed.* Widest **safe**
+breadth wins.
 
-## 29.3 The gaps NO incumbent fills
-1. **No trustworthy cross-sourced realized-price oracle.** CC, Loopscale, BAXUS all price off a *single*
-   source or their *own* index; the P2P players (Jupiter, NFTfi) give no pricing help at all. A
-   single-source price is the exact drain vector (the class of failure that hurt oracle-driven NFT lenders).
-2. **No safety through a downturn.** BendDAO nearly went insolvent on illiquid-NFT liquidations; NFTfi is
-   winding down as volume collapsed −97%. Nobody has *sized for the bear* with a proven-liquidity gate + reserve.
-3. **No genuinely permissionless breadth across proven-liquid RWAs.** Each incumbent is single-platform
-   (CC-only, BAXUS-only) or single-asset. Nobody sources collateral across *many* vetted platforms with capped lanes.
-4. **No honest, verifiable valuation.** Values are vendor-set or listing-influenced; none is built from
-   *cross-sourced realized sales* the borrower can trust.
+## 29.2 The competitive landscape
 
-## 29.4 The winning wedge (why Magpie is best)
-The five things, in order, that make us the #1 provider — each is something above nobody has:
-1. **The cross-sourced proven-liquidity oracle** ([doc 21](21-liquidity-eligibility-proof-of-sale.md)/[22](22-realized-sales-venue-comp-data-map.md)/[24](24-oracle-prototype-spec.md)/[27](27-sold-comp-verification-runbook.md))
-   — realized sales, corpus-independent, wash/outlier-rejected, fail-closed. **This is the moat; nobody else has it.**
-2. **Widest *safe* collateral breadth** — Pokémon → sports → top TCG → whiskey ([doc 28](28-addressable-collateral-universe.md)),
-   sourced across **multiple vetted platforms as capped lanes** ([doc 20](20-tokenization-platforms-collateral-sources.md)) — no single-vendor lock-in.
-3. **Safety through the cycle** — proven-liquidity gate + conservative LTV + short fixed terms + a real
-   reserve + no-make-whole liquidation ([doc 4](04-liquidation-risk.md)/[13](13-economic-model.md)). We survive the bear that killed the others.
-4. **Permissionless + non-custodial + fast on Solana** — no KYC gate, no application, no custody of user
-   funds; the oracle gates, not a person. Competitive-but-conservative rates (safety is the margin, not spread).
-5. **Radical transparency** — the whole threat model, vetting standard, sold-comp method, and parameters
-   are public. Trust is the product for a lending protocol; we out-transparency everyone.
+### On-chain / crypto
+| Player | Assets | LTV | Rate | Term | Liquidation | Perm.? | Status / loss event | Key weakness |
+|---|---|---|---|---|---|---|---|---|
+| **Collector Crypt (native)** | Own tokenized cards | unpublished **[t]** | 9–10% **[t]** | flexible **[t]** | none native | — | **card lending NOT live** — blocked on an unbuilt AI/GNN oracle; outsources credit to Loopscale/Jupiter | owns collateral + custody but **not the credit rail**; single-source (own-marketplace) valuation = the drain vector |
+| **Loopscale** (ex-Bridgesplit) | stables, LSTs, CC cards via curated vaults | ≤80% stables **[v]**; card LTV unpublished | ~5%+ **[s]** | 1d–3mo **[v]** | LTV/liq-LTV per vault | hybrid | **−$5.8M oracle exploit (Apr 26 2025)** — single-source PT mispricing, ~12% of TVL; Bridgesplit **abandoned collectibles** pre-relaunch | proven **single-oracle drain history** on novel collateral |
+| **Jupiter Offerbook** | permissionless — tokens, NFTs, **graded slabs** (live Jul 2026) | negotiated P2P | negotiated | **1–30d** **[v]** | **NONE — lender eats the default** | fully permissionless | live; **no published volume** | on default the lender is stuck with an illiquid slab, no exit; **most dangerous rival** (Jupiter distribution) |
+| **LendVault** | graded slabs | ~20% (demo) **[s]** | ~20% APR **[s]** | 30–90d **[s]** | undisclosed | gated waitlist | **not live** — demo/sample data | pre-launch; same oracle problem unsolved |
+| **BAXUS / Bridgesplit** | whiskey/spirits | unpublished | 12–15% **[s]** | — | undocumented | gated | ~$1M originated; credit rail (Bridgesplit) **exited collectibles** | not a real lender — vault + marketplace; **integration target, not rival** |
 
-## 29.5 Failure modes we design against (learned from the graveyard)
-- **BendDAO (illiquid liquidation cascade / bank run):** → proven-liquidity gate + graduated resale + reserve + no make-whole peg.
-- **Single-source oracle drain (Loopscale-class):** → cross-sourced, corpus-independent oracle; reject single-venue prints.
-- **NFTfi (no-oracle model capped growth + −97% volume):** → we *do* provide a trustworthy price, so lenders can size confidently; and we lend on *liquid* assets, not thin NFTs.
-- **Over-LTV chasing volume:** → conservative bands, earned increases only; decline over lend.
+### NFT-backed (Ethereum) — the precedents that died
+- **NFTfi** — P2P, no oracle, lender forecloses. **Winding down; app closes Aug 31 2026.** $737M lifetime, ~10% default. P2P externalizes loss → can't scale.
+- **Arcade** — ~50% LTV, ~25% APR, no oracle. **Dormant; TVL −98%**, 6.5% default. Pivoting "into Magpie's lane" off a collapse.
+- **Gondi** — self-underwritten, instant refinancing. **−$230K hack (Mar 2026)** — a feature shipped **ahead of audit** (missing caller check drained idle NFTs).
+- **Blend/Blur** — perpetual, Dutch-auction rate (0→~1000%), no oracle. **TVL −90%+**; dominance was **manufactured by BLUR token emissions**, not real demand.
+- **BendDAO** — the reference disaster: single floor oracle + shared pool + illiquid collateral → **Aug-2022 bank run**, 15k ETH out in 48h, **liquidation deadlock** exactly when needed.
+- **Kettle** (watches) — physical NY vault, no oracle/auction, no audit found, ~$2.1M TVL, quiet. Custodian *is* the trust model.
 
-## 29.6 What "best" concretely requires (the bar for #1)
-- **Price:** an honest, cross-sourced mark on every loan — the thing only we have.
-- **Breadth:** the widest *proven-liquid* set (cards → sports → TCG → whiskey), multi-platform.
-- **Safety:** zero bad debt through a real drawdown; a funded reserve; provable on-chain.
-- **UX:** permissionless, non-custodial, seconds-to-liquidity, competitive rates, radical transparency.
-Hit those and we are not just *a* lender for these assets — we are the **safest and widest**, which for a
-lending protocol *is* being the best.
+### TradFi collectible / luxury lenders (where price actually clears)
+- **Cards:** Alt "Alt Advance" **≤40% LTV, ~9–10%+SOFR, $25k min**; CFC/JM Bullion **≤60%, undisclosed rate, $25k min, CA-only**; Qollateral **~35% real LTV, ~35% APR**; Investacard 70–75% *advance* (a factor-rate, not a loan).
+- **Luxury/art:** Borro/Luxury Asset Capital **40–65%, ~60% APR** (original Borro **went bust 2017** on illiquid loans); Suttons & Robertsons **84–93% APR**; art lenders ~50% LTV, 3–12%, but **$1M+ minimums**.
+- **⚠️ PWCC (cards) — DISCONTINUED.** Its $175M WhiteHawk facility fell through after **defaults in the 2022–23 card crash**; acquired by Fanatics. **The one documented card-lending loss event — proof that crash-survivable liquidation design is make-or-break.**
+
+## 29.3 Where the market clears (the honest benchmark)
+For graded cards / vaulted collectibles:
+- **LTV: ~35–50%.** Off-chain caps 40–60% (Alt ≤40, CFC ≤60, Qollateral ~35 real); on-chain publishes none. **Anyone advertising 70%+ is a factor-rate advance or unproven marketing.** → *Our operator-set **≤50% top tier sits at the top of the honest band, not above it** — validated.*
+- **Rate:** TradFi **~35–93% APR**; the "cheap" outliers (Alt ~9–10%, art 3–12%) demand **$25k–$1M minimums**. On-chain targets 9–20% — **not yet shipped/proven.**
+- **Term:** **30–120 days** is the norm. **Fees:** 0–5%. **Custody:** uniformly custodial at the physical layer, even under "non-custodial" DeFi rails.
+- **Reading:** TradFi is expensive/slow/gated; on-chain is cheap/fast in theory but **not shipped, or shipped without a real risk engine.** **No incumbent is cheap + permissionless + safe + live at once.**
+
+## 29.4 The gaps NO incumbent fills
+1. **A trustworthy cross-sourced realized-price oracle — the whole game, and nobody has one.** CC's own lending is *blocked* on building one; Loopscale/BendDAO trusted a single source and **both blew up.**
+2. **A working liquidation rail for illiquid collateral.** CC: none. Offerbook: none (lender eats it). BendDAO: one that *deadlocked* under stress. → the **in-vault conversion / buyback** offramp.
+3. **Genuinely permissionless breadth *with* safety.** Offerbook is permissionless-but-unsafe; everyone else is whitelist- or KYC-gated.
+4. **Honest, published terms.** The most-marketed lenders publish **no rate**; Qollateral's LTV disclosures self-contradict. Transparency is itself a differentiator.
+5. **Multi-platform collateral sourcing.** Everyone is single-source (CC lends only its own cards; each vault only its own intake). Nobody runs **capped lanes across multiple platforms.**
+6. **Small-ticket + safe.** Cheap lenders wall off everyone under **$25k–$1M+**. A safe, cheap, small-ticket on-chain loan has no incumbent.
+
+## 29.5 The winning wedge (each beats a specific failure)
+| Wedge | Beats | Why it wins |
+|---|---|---|
+| **Cross-sourced proven-liquidity oracle** (realized sold comps, ≥2–3 independent venues, reject on divergence, cap to attested value) | Loopscale (−$5.8M single-oracle), BendDAO (floor-oracle deadlock), CC (no oracle → no lending) | the one asset nobody has; neutralizes the exact vector that killed the two biggest incidents |
+| **Fail-closed screening + capped multi-platform lanes** | Offerbook (open but unsafe), everyone else (gated) | permissionless breadth *with* per-platform caps; fail-CLOSED on price/screening, fail-OPEN only on liquidity aggregation |
+| **In-vault conversion / buyback liquidation rail** | Offerbook (no liquidation), BendDAO (deadlocked auction), P2P (lender holds the slab) | convert collateral in-vault to a liquid asset instead of dumping into a no-bid auction |
+| **Conservative-but-competitive, transparent terms** | Qollateral/Borro/Suttons (35–93% APR, opaque), art ($1M+ min) | published LTV/rate/term, non-custodial DeFi layer, fast on Solana, small-ticket |
+
+**What must be true to win — on price:** source realized *sold* prices from ≥2–3 **independent** venues; value off **sold comps, not listings** (the eBay shared-source flaw, already red-teamed); **fail-closed** on stale/divergent comps (a card that last sold 18 months ago = illiquid, lend low or not at all); cap collateral to the cross-sourced attested value with a drift buffer. The moat must be *defensible cross-sourcing*, not a single AI model — CC's GNN approach is *itself* a single source.
+
+## 29.6 The timing edge
+**Collector Crypt's and LendVault's card lending are BOTH pre-launch**, blocked on the exact oracle problem
+Magpie is designed to solve. **Jupiter Offerbook is live but unsafe** (no liquidation). **The window to be
+the first *safe, live, permissionless* card lender is open right now** — the market has proven the demand
+(CC ~$1.6B volume, tokenized-card volume ~5.5× in 2025) and proven exactly how lenders die.
+
+## 29.7 Failure modes we design against (the graveyard, itemized)
+1. **BendDAO** — single floor oracle + shared pool + illiquid collateral → reflexive run + liquidation
+   deadlock. → cross-sourced oracle; **no shared-pool duration mismatch**; a rail that doesn't need an
+   auction bidder mid-crash; conservative LTV.
+2. **Loopscale −$5.8M** — single-source manipulation on novel collateral. → never one source; reject on
+   divergence; validate every attacker byte on the pricing path.
+3. **Gondi −$230K** — feature shipped ahead of audit on escrow-adjacent code. → audit before any
+   escrow/approval-touching ship; gated deploys, migration plan, never same-id redeploy.
+4. **Blend/Blur** — dominance farmed by token emissions, evaporated (−90%+). → win on organic safety/
+   execution, never mercenary yield.
+5. **PWCC** — card lending on peak 2021 valuations, defaulted through the 2022–23 crash, facility
+   collapsed. → value off *realized* sold comps not peak listings; crash-survivable LTV; **liquidation
+   design under a crash is make-or-break.**
+6. **P2P books (NFTfi/Arcade/Kettle) + Offerbook** — risk fully privatized to lenders → no scaling / lender
+   holds an illiquid slab. → a protocol-level liquidation offramp so lender supply is sustainable.
+7. **Custodial single-point-of-failure** (CC/Kettle/TradFi single vault). → multi-platform sourcing, capped
+   per custodian; diversify the off-chain enforcers.
+
+## 29.8 Bottom line
+Demand is proven; the failure modes are proven; **no incumbent is cheap + permissionless + safe + live at
+once.** Magpie's cross-sourced proven-liquidity oracle is the one asset none of them has, and it is the
+precise antidote to every documented failure. **Ship it safe, conservative, transparent, and first — the
+collectibles lane is winnable.**
 
 ## Sources
-Competitive research + [doc 11](11-competitive-landscape.md) (Jupiter Offerbook / CC native / Loopscale /
-TradFi) + NFTfi teardown (wind-down Aug-2026, no-oracle P2P, sector −97%; BendDAO/Blend contrast) + [doc 28](28-addressable-collateral-universe.md)
-(CC 7–8% lending, single-source pricing everywhere). Benchmark specifics refined as the full teardown lands.
+Loopscale hack (Halborn / Blockworks / Loopscale post-mortem) · BendDAO crisis (CoinDesk / Blockworks /
+CryptoSlate) · CC lending targets (Solana Compass / SolanaFloor) · Jupiter Offerbook (CryptoBriefing /
+Genfinity) · LendVault · BAXUS (Solana Compass / Unloc) · NFT-lending collapse (The Defiant; NFTfi
+shutdown; Gondi hack; Blend/Paradigm; Kettle) · TradFi (Qollateral / Forbes-Luxury Asset Capital / Suttons
+& Robertsons / Alt Advance / PWCC→Fanatics). Full URLs in the research thread. *Caveats: CC/LendVault
+lending terms are targets/secondary, not shipped; on-chain card LTV/APR undisclosed industry-wide.*
