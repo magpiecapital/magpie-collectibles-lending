@@ -298,3 +298,27 @@ misdescribed card to **someone else** — the victim is a third party, not us.
   and external data sharing goes through the aggregate view only.
 - **I-17** An infrastructure failure never becomes an accusation: an unreachable RPC returns
   "ownership unproven", never "ownership mismatch".
+
+## Data retention policy for submissions (closes the T-21 open item, 2026-08-07)
+Holding submission data forever is not "keeping the asset" — it is accumulating liability with a
+decreasing half-life of usefulness. The value is in the **demand signal**, which survives
+aggregation; the identifying detail is what creates the risk, and it decays fast.
+
+| Data | Kept | Why |
+|---|---|---|
+| **Aggregate demand** (`collectible_submission_demand` — day, verdict, tier, platform, counts) | **Indefinitely** | No PII. This IS the asset: what collectors ask for and what we turn away, over time. |
+| **Approved / provisionally-eligible submissions** | **Life of the relationship + 7 years** | These may underpin a loan; the record has to outlive the loan for dispute and audit. |
+| **Declined submissions** | **24 months**, then reduce to the aggregate row | Long enough to spot a repeat fraudster and to show a collector why they were declined; short enough that a decline doesn't follow someone forever. |
+| **`contact`** (user-supplied handle/email) | **12 months** from last activity, then null | The only free-text PII we hold. It exists to reply to a submission, not to build a marketing list. |
+| **`ip_hash` / `ua_hash`** | **90 days** | Abuse correlation is a short-horizon problem. Beyond that they are pure liability. |
+| **`reviewer_note`** | With the parent row | Internal; never served. |
+
+**Rules that go with it**
+- Reduction is **destructive, not archival** — a "deleted" row that lives on in a backup export is not
+  deleted. Any export pipeline must apply the same clock.
+- A collector may ask for their submissions to be removed; honour it, keep the aggregate row.
+- **Nothing above is a reason to keep more.** If a field stops being used, drop it at the next
+  migration rather than letting it age into the table.
+- Implementation is a scheduled reduction job. **Not yet built** — tracked in
+  [doc 07](07-open-questions.md). Until it ships, retention is policy-on-paper, and that gap should be
+  closed before the submission volume gets interesting.
