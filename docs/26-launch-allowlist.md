@@ -124,3 +124,31 @@ Vetting standard from [doc 21](21-liquidity-eligibility-proof-of-sale.md) (proof
 (appraisal) + [doc 13](13-economic-model.md) (LTV/drawdown) + [doc 20](20-tokenization-platforms-collateral-sources.md)
 (platforms) + [doc 9](09-data-spike-results.md) (verified vintage drawdowns). Card identities are public
 catalogue facts; liquidity for each specific card is confirmed by the live gate, not asserted here.
+
+## 26.9 Authenticated autographs (operator-authorised 2026-08-07)
+Slabs graded **"Authentic" with a separately graded autograph** (PSA/DNA-style) carry no numeric
+condition grade, so §26.3's "below grade 8" exclusion used to catch them. They are now **accepted at
+Tier B**, never Tier A, under three conditions:
+
+| # | Condition | Why |
+|---|---|---|
+| AU-1 | Autograph graded **9–10** by PSA/DNA or Beckett, cert-verified | The signature is the value driver; an ungraded signature has no authentication anchor (V-1). |
+| AU-2 | The underlying card is an **iconic, densely-comped rookie** (Jordan, LeBron, Curry, Brady, Trout, Kobe — the §26.2 S-1..S-3 set) | **A signature does not create a market.** Blanket-accepting "autographed rookies" would import exactly the illiquid collateral V-2 exists to keep out. Any other player → candidate review, gated on a proven sold record. |
+| AU-3 | **Comped as its own variant.** The signed slab is priced ONLY against realized sales of the *signed* version at a comparable auto grade — never against unsigned sales of the same card | This is [doc 27](27-sold-comp-verification-runbook.md)'s variant lesson (variant is a 10–50× lever) applied to signatures. Comping a signed card off unsigned sales is a direct over-lend. |
+
+**Tier is capped at B** because condition was never numerically graded — the wider safety margin stands
+in for the missing grade. Everything else (V-2 proof-of-sale, V-3 realized-value integrity, caps) is
+unchanged.
+
+## 26.10 Public submission gate (shipped 2026-08-07, magpie-site PR #296)
+`magpie.capital/collectibles#submit` lets any collector put a card through this exact standard.
+Implemented in `src/lib/collectible-vetting.ts`; **fails closed at every stage**. Outcomes:
+`DECLINED` · `NEEDS_VAULTING` · `CANDIDATE_REVIEW` · `PROVISIONAL_TIER_A/B`.
+
+**There is no outcome that approves a loan.** V-2 needs realized multi-venue sold data that a form
+cannot supply, so the ceiling is "provisionally eligible, pending sold-comp verification", with final
+approval and sizing at loan time against live data. No model sits in the approve/deny path — an LLM
+cannot verify sales it can't access, and a fabricated sold record is the Loopscale failure mode. When
+the licensed feeds ([doc 23](23-outreach-briefs-psa-fanatics.md)) land, V-2 becomes automatable and
+drops into the same pipeline. This is the mechanism by which the book **expands** without the standard
+**loosening**.
