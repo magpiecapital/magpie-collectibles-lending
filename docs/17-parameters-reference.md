@@ -38,6 +38,7 @@ not final*. Where a later doc tightened an earlier one, the tighter value wins (
 | **Liquidity boundary buffer** (anti tier-flip) | dispersion must be ≤ tier threshold × (1 − **0.15**) to grant the tier; borderline → conservative tier | T-17 / I-12 ([prototype](../prototype/README.md)) |
 | Loan duration | 30–90 days, fixed | [doc 10.4](10-fixed-term-v1-spec.md) |
 | Interest (APR) | ~10–14%, tiered, no origination fee | doc 13.4 |
+| **Per-tier terms (published on the site 2026-08-07)** | **Tier A: ≤50% LTV · 30–60d · ~10–12% APR** · **Tier B: ≤40% LTV · 30–90d · ~12–14% APR** | derived: duration within doc 10.4's 30–90d, APR within doc 13.4's ~10–14% band, and doc 13.2 gating the 50% top LTV to Tier A on the **shortest terms** → A caps at 60d and prices at the low end |
 | Maintenance/liquidation trigger (MtM layer only) | ~70% live LTV, independent-comp mark | doc 3.4 (I-1/F-4) |
 | Renewal | re-appraise (new origination), no auto-rollover | doc 10.4 |
 | Cure/grace window | short (24–48h), only if buyback covers debt | doc 3.4 / 10.5 |
