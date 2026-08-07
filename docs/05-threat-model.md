@@ -220,3 +220,81 @@ entirely. New **I-12**. *(surfaced by fuzzing the appraisal engine — the value
 - [ ] Confirm every invariant I-1…I-11 has an enforcement point (on-chain where it must be, monitored off-chain where it can't).
 - [ ] Add all findings (incl. F-1…F-11) to the Magpie exploit/defense catalog.
 - [ ] Re-run adversarial design review — **no open Critical/High findings.**
+
+---
+
+# Submission-gate & user-data threats (added 2026-08-07)
+The public submission gate ([doc 26.10](26-launch-allowlist.md)) and the durable submission record
+(bot migration 097) are a **new attack surface that T-1..T-17 predate**. T-1..T-17 assume collateral
+that has already reached us; these cover the stage before that, where **everything is self-reported**.
+
+**The governing rule: no self-reported field may ever reach a lending decision.** The gate performs
+triage. Custody at origination — the card must actually be escrowed on-chain — remains the control
+that money depends on, and no submission outcome weakens it.
+
+## T-18 · Submission deception (fabricated or borrowed slab details)
+An attacker types a cert, grade and card they do not own — often lifted verbatim from a real public
+listing — to obtain a favourable verdict.
+- **Why it's bounded:** a favourable verdict grants *nothing*. The best available outcome is
+  "provisionally eligible, pending sold-comp verification", and a loan additionally requires the cert
+  to be verified against the grader's own records and the card to be escrowed on-chain.
+- **Controls:** on-chain ownership check (below); cert-vs-grader verification before any loan;
+  standing "everything on this form is self-reported" check shown in every result; **no dollar value
+  is ever emitted** by the gate, so a verdict cannot be converted into a price.
+- **Residual:** a determined liar can still obtain a provisional verdict for a card they don't hold.
+  Accepted — it buys them nothing, and the attempt is recorded.
+
+## T-19 · Cert-identity theft (same slab, two claimants)
+Two wallets claim the same certification number; at most one is the holder.
+- **Controls:** the record keeps **one row per attempt and never upserts on (grader, cert)** —
+  collapsing them would destroy the evidence. A repeat cert is flagged; a repeat cert **under a
+  different wallet** escalates to the operator *even when the verdict is a decline*.
+- **Real control:** custody at origination. You cannot escrow a card you don't hold.
+
+## T-20 · Enumeration & resource abuse
+A bot submits at volume to map the gate's rules, harvest which cards we accept, or exhaust resources.
+- **Controls:** 20 submissions per IP-hash per hour; the gate is deterministic and returns **no
+  pricing, no comp data and no dollar values**, so enumerating it reveals only the allowlist we
+  already publish; ownership and DB lookups are best-effort and never block on failure.
+- **Note:** the limiter keys on the salted IP hash, so it is inert without `SUBMISSION_HASH_SALT`
+  configured. **Set the salt in any environment that accepts public submissions.**
+
+## T-21 · Submitter data exposure / internal-data misuse
+We now hold wallet linkage, optional user-supplied contact details, and abuse signals. This is both a
+duty of care and — per the operator's data-asset goal — something whose value depends entirely on it
+never leaking.
+- **Controls:** reads are **wallet-scoped and use an explicit column list, never `SELECT *`**, so an
+  internal column added later cannot start leaking by accident; `reviewer_note`, `ip_hash`, `ua_hash`
+  and `flags` never leave the protocol; IP and user-agent are stored **salted-hashed, never raw** —
+  with no salt they store nothing rather than something reversible; the wallet parameter is validated
+  as base58 32–44 before it reaches a query.
+- **Data-room posture:** `collectible_submission_demand` is the aggregate, PII-free view. **Any
+  external sharing goes through that view, never the base table.** An acquirer wants the demand
+  signal, not the identities — and shipping identities would be the fastest way to destroy the asset's
+  value along with user trust.
+- **Open:** a retention policy (how long declined submissions are kept) is NOT yet defined — see
+  [doc 07](07-open-questions.md).
+
+## T-22 · Verdict laundering (our result used as a trust badge against a third party)
+A scammer screenshots a "provisionally eligible" result and uses it to sell a counterfeit or
+misdescribed card to **someone else** — the victim is a third party, not us.
+- **Why this is the sharpest one here:** every other threat costs us money; this one costs a stranger
+  money using our name, which is worse.
+- **Controls:** the result states it is not a loan offer, and every result carries the always-pending
+  "cert verified with the grader" check; **the gate never authenticates a card and never prices one**,
+  and the copy must keep saying so. No result may ever be phrased as "approved", "verified" or
+  "authenticated" for a specific slab.
+- **Standing rule for anyone editing this copy:** if a screenshot of a verdict could be mistaken for
+  an authentication certificate or an appraisal, the copy is wrong.
+
+## Added security invariants
+- **I-13** No self-reported field may influence a lending decision. Custody at origination is the
+  control that money depends on.
+- **I-14** The gate emits **no dollar value, no appraisal and no authentication** for any specific
+  card — ever.
+- **I-15** A verdict is never edited. The machine `verdict` and the human `status` are separate
+  columns so the two can always be audited against each other.
+- **I-16** Internal columns (`reviewer_note`, `ip_hash`, `ua_hash`, `flags`) never leave the protocol,
+  and external data sharing goes through the aggregate view only.
+- **I-17** An infrastructure failure never becomes an accusation: an unreachable RPC returns
+  "ownership unproven", never "ownership mismatch".
